@@ -44,6 +44,7 @@
                             : 'block bg-gray-300 border disabled rounded-md p-3 shadow-sm cursor-pointer';
                 @endphp
 
+                    {{$nilaiTerkunci ?? 'gk'}}
                 <div class="font-semibold text-sm text-gray-700">{{ $indikator->nama_indikator }}</div>
                 <div class="space-y-2 text-sm">
                     <label for="level1" class="{{ $style }}">

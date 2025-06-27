@@ -18,7 +18,19 @@
         <div class="grid grid-cols-3 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-6">
             @foreach ($formulirs as $form)
                 <div class="border rounded-lg shadow p-6 bg-white hover:bg-gray-50 transition ease-in-out duration-150">
-                    <div class="flex xl:flex md:flex-none justify-between">
+                    @if ($form->domains->count() == 0)
+                        <div
+                            class="border border-red-500 p-2 mb-2 rounded-md hover:border-red-700 hover:bg-red-100 transition ease-in-out duration-150">
+                            <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                            <span class="text-red-500">Belum ada domain. </span>
+                            <a href="{{ route('formulir.set-default-children', $form->id) }}"
+                                class="text-red-500 hover:text-red-700 hover:underline underline font-semibold">Klik Untuk menambah domain secara
+                                otomatis.</a>
+                        </div>
+                    @else
+                        {{-- <i class="fas fa-check-circle text-green-500 mr-2"></i> <span>Domain tersedia</span> --}}
+                    @endif
+                    <div class="flex xl:flex md:flex-none justify-between mt-4">
                         <h2 class="text-lg font-semibold mb-2">{{ $form->nama_formulir }}</h2>
                         <div class="flex gap-2">
                             <a href="{{ route('formulir.edit', $form->id) }}"

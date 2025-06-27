@@ -9,7 +9,7 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach ($formulir->domain as $domain)
+            @foreach ($formulir->domains as $domain)
                 <div
                     class="bg-white border border-gray-300 shadow-lg rounded-mdpb-8 mb-3 hover:bg-gray-300 transition ease-in-out duration-100">
                     <div class="w-full h-3 bg-gray-800 rounded-t-md "></div>

@@ -13,7 +13,9 @@
         <hr>
         <div class="grid grid-cols-2 md:grid-cols-2 gap-4 mt-5">
 
-            @forelse ($formulir->domain as $domain)
+            @forelse ($formulir->domains as $domain)
+
+
                 <div
                     class="bg-white border shadow-lg rounded px-8 pt-6 pb-8 mb-3 hover:bg-gray-300 transition ease-in-out duration-100">
                     <div class="flex items-center justify-between">

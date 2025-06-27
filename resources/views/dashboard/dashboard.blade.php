@@ -1,4 +1,5 @@
 @extends('dashboard.layout')
+@section('title', 'Dashboard')
 @section('content')
     <div class="card p-8">
 
@@ -34,6 +35,19 @@
                         @endforeach
                     </select>
                 </div>
+
+                <div class="mb-4">
+                    <label for="user_id" class="block text-sm font-medium text-gray-700 mb-1">Pilih Kegiatan Kegiatan</label>
+                    <select name="formulir_id" id="formulir_id" required
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="" selected>-- Pilih Kegiatan Penilaian --</option>
+                        @foreach ($kegiatanPenilaian as $penilaian)
+                            <option value="{{ $penilaian->id }}">{{ $penilaian->nama_formulir }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+
                 <div class="flex justify-end space-x-2">
                     <a href="{{ url()->previous() }}"
                         class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Kembali</a>

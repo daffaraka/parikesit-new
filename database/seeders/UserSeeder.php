@@ -32,6 +32,15 @@ class UserSeeder extends Seeder
             'nomor_telepon' => '081234567890',
         ]);
 
+         User::factory()->create([
+            'name' => 'Admin_2',
+            'email' => 'admin2@example.com',
+            'password' => bcrypt('password'),
+            'role' => 'admin',
+            'alamat' => 'Jl. Pahlawan',
+            'nomor_telepon' => '0828828282',
+        ]);
+
         User::factory()->create([
             'name' => 'Walidata',
             'email' => 'walidata@example.com',

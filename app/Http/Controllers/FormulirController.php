@@ -7,6 +7,7 @@ use App\Models\Domain;
 use App\Models\Formulir;
 use App\Models\Indikator;
 use Illuminate\Http\Request;
+use App\Models\FormulirDomain;
 
 class FormulirController extends Controller
 {
@@ -15,7 +16,7 @@ class FormulirController extends Controller
      */
     public function index()
     {
-        $formulirs = Formulir::latest()->get();
+        $formulirs = Formulir::with('domains')->latest()->get();
 
         // dd($formulirs);
         return view('dashboard.formulir.form-index', compact('formulirs'));
@@ -524,27 +525,15 @@ class FormulirController extends Controller
         return redirect()->route('formulir.index')->with('success', 'Formulir berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Formulir $formulir)
     {
-
-        // $formulir->load('domain.aspek.indikator');
-
-        // $formulir->domain->withCount('aspek')->get();
-
-
-        // dd($form)
-
-
-        // dd($formulir);
+        // dd($formulir->with('domains')->get());
+        $formulir->load('domains.aspek.indikator');
         return view('dashboard.formulir.form-show', compact('formulir'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Formulir $formulir)
     {
 
@@ -581,5 +570,23 @@ class FormulirController extends Controller
         $formulir->delete();
 
         return redirect()->route('formulir.index')->with('success', 'Formulir berhasil dihapus');
+    }
+
+
+    public function setDefaultChildren($id)
+    {
+        $formulir = Formulir::find($id);
+        $domains = Domain::all();
+
+        foreach ($domains as $domain) {
+            FormulirDomain::create([
+                'formulir_id' => $formulir->id,
+                'domain_id' => $domain->id
+            ]);
+        }
+
+
+
+        return redirect()->route('formulir.index')->with('success', 'Data Domain telah ditambahkan ke dalam formulir');
     }
 }

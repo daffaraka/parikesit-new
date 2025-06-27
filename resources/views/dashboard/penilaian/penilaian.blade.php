@@ -64,25 +64,33 @@
                         @endif --}}
 
                         @php
-                            if ($persentase >= 80) {
-                                $warna = 'bg-green-500';
-                            } elseif ($persentase >= 50) {
-                                $warna = 'bg-yellow-500';
-                            } elseif ($persentase > 0) {
+                            if ($persentase <= 20 && $persentase > 0) {
                                 $warna = 'bg-red-500';
+                            } elseif ($persentase > 20 && $persentase <= 40) {
+                                $warna = 'bg-yellow-500';
+                            } elseif ($persentase > 40 && $persentase <= 60) {
+                                $warna = 'bg-orange-500';
+                            } elseif ($persentase > 60 && $persentase <= 80) {
+                                $warna = 'bg-green-500';
+                            } elseif ($persentase > 80 && $persentase <= 99) {
+                                $warna = 'bg-blue-500';
+                            } elseif($persentase == 100) {
+                                $warna = 'bg-indigo-500';
                             } else {
-                                $warna = 'bg-gray-300';
+                                $warna = 'bg-gray-500';
                             }
                         @endphp
 
 
 
                         <div class="w-full bg-gray-200 rounded-full h-5">
-                            <div class="h-5 rounded-full {{ $warna ?? 'bg-white' }}" style="width: {{ $persentase }}%"></div>
+                            <div class="h-5 rounded-full {{ $warna ?? 'bg-white' }}" style="width: {{ $persentase }}%">
+                            </div>
                         </div>
                         <div class="px-1 mt-2">
                             <p class="mt-1 text-sm text-gray-700"> {{ $terisi }} dari {{ $totalIndikator }} indikator
-                                ({{ $persentase }}%)</p>
+                                <b class="font-weight-bolder">({{ $persentase }}%) </b>
+                            </p>
                         </div>
 
                     </div>
@@ -114,7 +122,7 @@
                     </thead>
                     <tbody>
 
-                        @foreach ($formulir->domain as $domain)
+                        @foreach ($formulir->domains as $domain)
                             <tr>
                                 <td class="py-2 px-4 font-semibold">{{ $domain->nama_domain }}</td>
                                 <td class="py-2 px-4">{{ $domain->aspek->count() }}</td>

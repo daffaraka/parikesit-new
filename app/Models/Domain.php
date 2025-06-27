@@ -11,15 +11,15 @@ class Domain extends Model
     use HasFactory;
 
     protected $fillable = [
-        'formulir_id',
+        // 'formulir_id',
         'nama_domain',
         'bobot_domain'
     ];
 
 
-    public function formulir()
+    public function formulirs()
     {
-        return $this->belongsTo(Formulir::class,'formulir_id');
+        return $this->belongsToMany(Formulir::class, 'formulir_domains');
     }
 
     public function aspek()

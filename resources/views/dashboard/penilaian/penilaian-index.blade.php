@@ -41,18 +41,18 @@
                         <div class="flex">
                             <ul class="list-disc pl-6 mt-2">
                                 <li class="text-lg">
-                                    <p class="font-semibold text-blue-700">{{ $form->domain->count() }} Aspek</p>
+                                    <p class="font-semibold text-blue-700">{{ $form->domains->count() }} Aspek</p>
                                 </li>
                                 <li class="text-lg">
                                     <p class="font-semibold text-blue-700">
-                                        {{ $form->domain->sum(function ($domain) {
+                                        {{ $form->domains->sum(function ($domain) {
                                             return $domain->aspek->count();
                                         }) }}
                                         Aspek</p>
                                 </li>
                                 <li class="text-lg">
                                     <p class="font-semibold text-blue-700">
-                                        {{ $form->domain->sum(function ($domain) {
+                                        {{ $form->domains->sum(function ($domain) {
                                             return $domain->aspek->sum(function ($aspek) {
                                                 return $aspek->indikator->count();
                                             });

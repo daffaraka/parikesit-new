@@ -15,60 +15,49 @@ use Illuminate\Support\Facades\Auth;
 class PenilaianController extends Controller
 {
 
-
-    // public function dashboardPenilaian()
-    // {
-
-    //     return view('dashboard.penilaian.domain-penilaian');
-    // }
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $data['title'] = 'Dashboard';
-        $data['kegiatanPenilaian'] = Formulir::with('domain.aspek.indikator.penilaian')->whereDoesntHave('domain.aspek.indikator.penilaian', function ($query) {
-            $query->whereNull('nilai');
-        })->latest()->get();
 
-
-
-
-        // dd($data);
-
-        // dd($data['kegiatanPenilaian']);
-        // $data['jumlahKegiatanPenilaian'] = Formulir::count();
-        // $data['jumlahPenilaianSelesai'] = Formulir::count();
-        // $data['jumlahPenilaianProgres'] = Formulir::count();
-        // $data['userTerdaftar'] = User::count();
+        // Ambil formulir yang indikatornya semua sudah dinilai (user tertentu bisa disesuaikan)
+        $data['kegiatanPenilaian'] = Formulir::with('domains.aspek.indikator.penilaian')
+            ->whereDoesntHave('domains.aspek.indikator.penilaian', function ($query) {
+                $query->whereNull('nilai');
+            })
+            ->latest()
+            ->get();
 
         foreach ($data['kegiatanPenilaian'] as $formulir) {
+
             $totalIndikator = 0;
             $terisi = 0;
+            foreach ($formulir->domains as $domain) {
 
-            foreach ($formulir->domain as $domain) {
+                // dd($formulir->id);
                 foreach ($domain->aspek as $aspek) {
                     $totalIndikator += $aspek->indikator->count();
                     foreach ($aspek->indikator as $indikator) {
+                        // Filter berdasarkan user & formulir yang sedang di-loop
                         if ($indikator->penilaian->where('user_id', Auth::user()->id)->where('formulir_id', $formulir->id)->isNotEmpty()) {
                             $terisi++;
                         }
                     }
                 }
-
-                $formulir->total_indikator = $totalIndikator;
-                $formulir->indikator_terisi = $terisi;
-                $formulir->persentase = $totalIndikator > 0 ? round(($terisi / $totalIndikator) * 100, 2) : 0;
             }
 
-            // Simpan ke property tambahan agar bisa diakses di blade
 
+
+
+            // Tambahkan data ke instance Formulir
+            $formulir->total_indikator = $totalIndikator;
+            $formulir->indikator_terisi = $terisi;
+            $formulir->persentase = $totalIndikator > 0 ? round(($terisi / $totalIndikator) * 100, 2) : 0;
+
+            // dd($formulir->indikator_terisi);
         }
 
 
-        // dd($terisi);
-
-
+        // dd($formulir);
 
 
         return view('dashboard.penilaian.penilaian-index', $data);
@@ -77,44 +66,69 @@ class PenilaianController extends Controller
 
     public function penilaianTersedia(Formulir $formulir)
     {
-
-
         $totalIndikator = 0;
         $terisi = 0;
 
-        $formulir->load('domain.aspek.indikator');
+        // Load relasi sampai penilaian
+        $formulir->load('formulir_domains.domain.aspek.indikator.penilaian');
 
+        foreach ($formulir->formulir_domains as $formulirDomain) {
+            $domain = $formulirDomain->domain;
 
-        foreach ($formulir->domain as $domain) {
             foreach ($domain->aspek as $aspek) {
-                $totalIndikator += $aspek->indikator->count();
                 foreach ($aspek->indikator as $indikator) {
+                    $totalIndikator++;
 
-                    if ($indikator->penilaian->isNotEmpty()) {
+                    // Hitung hanya penilaian untuk formulir & user saat ini (jika pakai filter)
+                    if ($indikator->penilaian->where('formulir_id', $formulir->id)->isNotEmpty()) {
                         $terisi++;
                     }
                 }
             }
         }
 
-
-        // dd($totalIndikator,$terisi);
-
         $persentase = $totalIndikator > 0 ? round(($terisi / $totalIndikator) * 100, 2) : 0;
 
-
-        // dd($persentase);
-
-        // dd($formulir);
         return view('dashboard.penilaian.penilaian', compact('formulir', 'persentase', 'totalIndikator', 'terisi'));
     }
+
+
+    //  public function penilaianTersedia(Formulir $formulir)
+    // {
+    //     $totalIndikator = 0;
+    //     $terisi = 0;
+
+    //     $formulir->load('domains.aspek.indikator');
+
+    //     foreach ($formulir->domains as $domain) {
+    //         foreach ($domain->aspek as $aspek) {
+    //             $totalIndikator += $aspek->indikator->count();
+    //             foreach ($aspek->indikator as $indikator) {
+
+    //                 if ($indikator->penilaian->isNotEmpty()) {
+    //                     $terisi++;
+    //                 }
+    //             }
+    //         }
+    //     }
+
+
+    //     // dd($totalIndikator,$terisi);
+
+    //     $persentase = $totalIndikator > 0 ? round(($terisi / $totalIndikator) * 100, 2) : 0;
+
+
+    //     return view('dashboard.penilaian.penilaian', compact('formulir', 'persentase', 'totalIndikator', 'terisi'));
+    // }
+
+
 
 
     //  formulir/{1}/domain-penilaian
 
     public function domainPenilaian(Formulir $formulir)
     {
-        $formulir->load('domain.aspek.indikator');
+        $formulir->load('domains.aspek.indikator');
 
         // dd($formulir);
         return view('dashboard.penilaian.domain-penilaian', compact('formulir'));
@@ -126,27 +140,30 @@ class PenilaianController extends Controller
     {
 
 
-        $domain = Domain::where('formulir_id', $formulir->id)->where('nama_domain', $nama_domain)->first();
-        $formulir->load('domain.aspek.indikator');
+        // dd($formulir);
+        $domain = Domain::where('nama_domain', $nama_domain)->first();
+        // dd($domain->nama_domain);
+        $formulir->load('formulir_domains.domain.aspek.indikator.penilaian');
         return view('dashboard.penilaian.isi-domain-aspek-penilaian', compact(['formulir', 'domain']));
     }
 
 
     public function penilaianAspek(Formulir $formulir, $nama_domain, $aspek, $req_indikator)
     {
-        $domain = Domain::where('formulir_id', $formulir->id)->where('nama_domain', $nama_domain)->first();
+        // $domain = Domain::where('formulir_id', $formulir->id)->where('nama_domain', $nama_domain)->first();
+        $domain = Domain::where('nama_domain', $nama_domain)->first();
         $aspek = Aspek::where('domain_id', $domain->id)->where('nama_aspek', $aspek)->first();
         $indikator = Indikator::with('penilaian')->where('aspek_id', $aspek->id)->where('nama_indikator', $req_indikator)->first();
-        $formulir->load('domain.aspek.indikator');
+        $formulir->load('domains.aspek.indikator');
 
-        $dinilai = Indikator::with('penilaian')->whereHas('penilaian', function ($query) use ($indikator) {
-            $query->where('user_id', Auth::user()->id)->where('nilai', '!=', null)->where('indikator_id', $indikator->id);
-        })->where('nama_indikator', $req_indikator)->first();
+        $dinilai = Indikator::with('penilaian')->whereHas('penilaian', function ($query) use ($indikator, $formulir) {
+            $query->where('user_id', Auth::user()->id)->where('nilai', '!=', null)->where('indikator_id', $indikator->id)->whereFormulirId($formulir->id);
+        })
 
 
-        //  $dinilai = Indikator::whereHas('penilaian',function($query) {
-        //     $query->where('user_id', Auth::user()->id)->where('nilai', '!=', null);
-        // })->where('')->get();
+        ->where('nama_indikator', $req_indikator)->first();
+
+
 
         // dd($dinilai->penilaian);
         // dd($dinilai);

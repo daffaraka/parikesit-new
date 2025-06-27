@@ -14,7 +14,7 @@
 
     {{-- <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" /> --}}
 
-    <title>@yield('title', 'Parikesit')</title>
+    <title>@yield('title', 'New Parikesit')</title>
 </head>
 
 <body class="bg-gray-100">

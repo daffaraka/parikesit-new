@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Domain;
+use App\Models\FormulirDomain;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Formulir extends Model
 {
@@ -20,8 +22,14 @@ class Formulir extends Model
     // ];
 
 
-    public function domain()
+
+    public function formulir_domains()
     {
-        return $this->hasMany(Domain::class);
+        return $this->hasMany(FormulirDomain::class);
+    }
+
+    public function domains()
+    {
+        return $this->belongsToMany(Domain::class, 'formulir_domains');
     }
 }

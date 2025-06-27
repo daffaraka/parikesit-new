@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('generate-penilaian', [DashboardController::class, 'generatePenilaian'])->name('dashboard.generate-penilaian');
     Route::resource('formulir', FormulirController::class);
+    Route::get('formulir/{formulir}/set-default-children', [FormulirController::class, 'setDefaultChildren'])->name('formulir.set-default-children');
+
     Route::resource('formulir.domain', DomainController::class)->shallow()->only([
         'index',
         'create',
@@ -52,8 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::get('formulir/{formulir}/domain-penilaian', [PenilaianController::class, 'domainPenilaian'])->name('formulir.domain-penilaian');
     Route::get('formulir/{formulir}/domain-penilaian/{domain}', [PenilaianController::class, 'isiDomain'])->name('formulir.isi-domain');
     Route::get('formulir/{formulir}/domain-penilaian/{domain}/{aspek}/{indikator}', [PenilaianController::class, 'penilaianAspek'])->name('formulir.penilaianAspek');
-
     Route::post('formulir/{formulir}/domain-penilaian/{domain}/{aspek}/{indikator}/store-penilaian', [PenilaianController::class, 'store'])->name('formulir.store-penilaian');
+
     Route::resource('penjadwalan', PenjadwalanController::class);
 
     Route::get('pembinaan', [PembinaanController::class, 'index'])->name('pembinaan.index');

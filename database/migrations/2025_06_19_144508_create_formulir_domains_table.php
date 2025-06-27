@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('domains', function (Blueprint $table) {
+        Schema::create('formulir_domains', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('formulir_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->string('nama_domain');
-            $table->decimal('bobot_domain', 5, 2)->nullable();
-
+            $table->foreignId('formulir_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('domain_id')->constrained()->onDelete('cascade ')->onUpdate('cascade');
             $table->softDeletes();
-
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('domains');
+        Schema::dropIfExists('formulir_domains');
     }
 };

@@ -1,12 +1,12 @@
 @extends('dashboard.layout')
-
+@section('title', $domain->nama_domain)
 @section('content')
     {{-- formulir/{id-domain}/domain-penilaian/{domain} --}}
     <div class="space-y-6">
 
         {{-- Judul --}}
         <div class="flex justify-between items-center">
-            <h4 class="text-lg font-semibold text-blue-700 text-uppercase">{{ strtoupper($domain->nama_domain) }}</h4>
+            <h4 class="text-3xl font-semibold text-blue-700 text-uppercase">{{ strtoupper($domain->nama_domain) }}</h4>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
@@ -57,19 +57,32 @@
                                                 </a>
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                @if ($indikator->penilaian->count())
-                                                <span class="text-black rounded text-md font-bold"> {{ $indikator->penilaian->first()->nilai }}</span>
+                                                @php
 
+                                                    $domainDibuka = $indikator->aspek->domain->formulirs->firstWhere('id', $formulir->id);
+                                                    $penilaianUser = $indikator->penilaian
+                                                        ->where('user_id', Auth::id())
+                                                        ->where('formulir_id', $domainDibuka->id)
+                                                        ->first();
+                                                @endphp
 
+                                                @if ($penilaianUser && $domainDibuka->id == $formulir->id)
+                                                    <span class="text-black rounded text-md font-bold">
+                                                        {{ $penilaianUser->nilai }}
+                                                    </span>
                                                 @else
-                                                    <span class="text-red-500">-</span>
+                                                    <span class="text-red-500">- </span>
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                @if ($indikator->penilaian->count())
-                                                    <span class="bg-blue-500 p-3 text-white rounded text-xs font-semibold">Sudah diisi</span>
+                                                @if ($penilaianUser )
+                                                    <span
+                                                        class="bg-blue-500 p-3 text-white rounded text-xs font-semibold">Sudah
+                                                        Diisi</span>
                                                 @else
-                                                <span class="bg-red-500 p-3 text-white rounded text-xs font-semibold">Belum diisi</span>
+                                                    <span
+                                                        class="bg-red-500 p-3 text-white rounded text-xs font-semibold">Belum
+                                                        diisi</span>
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">

@@ -36,22 +36,27 @@ class DashboardController extends Controller
 
     public function generatePenilaian(Request $request)
     {
-        $indikators = Indikator::with('aspek.domain.formulir')->get();
+        $indikators = Indikator::with('aspek.domain.formulirs')->get();
 
 
+
+        $cekPenilaian = Penilaian::where('formulir_id', $request->formulir_id)->where('user_id', $request->user_id)->exists();
+
+        // dd($cekPenilaian);
         foreach ($indikators as $indikator) {
+
 
             $penilaian = new Penilaian();
             $penilaian->indikator_id = $indikator->id;
             $penilaian->nilai = rand(1, 5);
-            $penilaian->formulir_id = $indikator->aspek->domain->formulir->id;
+            $penilaian->formulir_id = $request->formulir_id;
             $penilaian->tanggal_penilaian = Carbon::now();
             $penilaian->user_id = $request->user_id;
             $penilaian->save();
 
             if ($penilaian) {
                 FormulirPenilaianDisposisi::create([
-                    'formulir_id' => $indikator->aspek->domain->formulir->id,
+                    'formulir_id' => $request->formulir_id,
                     'indikator_id' => $indikator->id,
                     'assigned_profile_id' => $request->user_id,
                     'status' => 'sent',
