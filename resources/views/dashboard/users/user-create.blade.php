@@ -5,21 +5,21 @@
         <h4 class="h4 mb-4">Tambah Formulir</h4>
 
 
-        <form action="{{ route('formulir.store') }}" method="POST" id="form_create">
+        <form action="{{ route('user.store') }}" method="POST" id="form_create">
 
             @csrf
             <div class="flex flex-col gap mb-3">
                 <label class="font-semibold">Nama</label>
                 <input type="text"
                     class="p-2 rounded border border-gray-400 shadow focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 focus:bg-gray-200"
-                    name="name" required>
+                    name="name" value="{{ old('name') }}" required>
             </div>
 
             <div class="flex flex-col gap mb-3">
                 <label class="font-semibold">Email</label>
                 <input type="email"
                     class="p-2 rounded border border-gray-400 shadow focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 focus:bg-gray-200"
-                    name="email" required>
+                    name="email" value="{{ old('email') }}" required>
             </div>
 
             <div class="flex flex-col gap mb-3">
@@ -33,9 +33,9 @@
                 <label class="font-semibold">Role</label>
                 <select name="role"
                     class="p-2 rounded border border-gray-400 shadow focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 focus:bg-gray-200">
-                    <option value="admin">Admin</option>
-                    <option value="opd">OPD</option>
-                    <option value="walidata">Walidata</option>
+                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="opd" {{ old('role') == 'opd' ? 'selected' : '' }}>OPD</option>
+                    <option value="walidata" {{ old('role') == 'walidata' ? 'selected' : '' }}>Walidata</option>
                 </select>
             </div>
 
@@ -43,14 +43,14 @@
                 <label class="font-semibold">Alamat</label>
                 <input type="text"
                     class="p-2 rounded border border-gray-400 shadow focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 focus:bg-gray-200"
-                    name="alamat" required>
+                    name="alamat" value="{{ old('alamat') }}" required>
             </div>
 
             <div class="flex flex-col gap mb-3">
                 <label class="font-semibold">Nomor Telepon</label>
                 <input type="text"
                     class="p-2 rounded border border-gray-400 shadow focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 focus:bg-gray-200"
-                    name="nomor_telepon" required>
+                    name="nomor_telepon" value="{{ old('nomor_telepon') }}" required>
             </div>
 
 

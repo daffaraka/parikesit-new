@@ -14,12 +14,21 @@
         <div class="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-1 gap-4">
             @foreach ($kegiatanPenilaian as $form)
                 @php
-                    $warna = match (true) {
-                        $form->persentase >= 80 => 'bg-green-500',
-                        $form->persentase >= 50 => 'bg-yellow-500',
-                        $form->persentase > 0 => 'bg-red-500',
-                        default => 'bg-gray-300',
-                    };
+                    if ($form->persentase <= 20 && $form->persentase > 0) {
+                        $warna = 'bg-red-500';
+                    } elseif ($form->persentase > 20 && $form->persentase <= 40) {
+                        $warna = 'bg-yellow-500';
+                    } elseif ($form->persentase > 40 && $form->persentase <= 60) {
+                        $warna = 'bg-orange-500';
+                    } elseif ($form->persentase > 60 && $form->persentase <= 80) {
+                        $warna = 'bg-green-500';
+                    } elseif ($form->persentase > 80 && $form->persentase <= 99) {
+                        $warna = 'bg-blue-500';
+                    } elseif ($form->persentase == 100) {
+                        $warna = 'bg-indigo-500';
+                    } else {
+                        $warna = 'bg-gray-500';
+                    }
                 @endphp
                 <div
                     class="bg-white border shadow-lg pb-1 mb-3 hover:bg-gray-300 transition ease-in-out duration-100 border-indigo-400 rounded-lg">
