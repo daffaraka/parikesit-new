@@ -3,11 +3,32 @@
 @section('content')
     {{-- formulir/{id-domain}/domain-penilaian/{domain} --}}
     <div class="space-y-6">
-
-        {{-- Judul --}}
         <div class="flex justify-between items-center">
-            <h4 class="text-3xl font-semibold text-blue-700 text-uppercase">{{ strtoupper($domain->nama_domain) }}</h4>
+            <h4 class="text-2xl font-semibold text-blue-700 text-uppercase">{{ strtoupper($domain->nama_domain) }}</h4>
         </div>
+        {{-- Breadcumb --}}
+        <nav class="bg-white p-4 border-2 rounded-md w-full mb-4">
+            <ol class="list-reset flex text-grey-dark">
+                <li><a href="{{ route('dashboard') }}" class="text-blue-600 hover:underline">Dashboard</a></li>
+                <li><span class="mx-2 ">&gt;</span></li>
+                <li><a href="{{ route('penilaian.index') }}" class="text-blue-600 hover:underline">Penilaian</a></li>
+                <li><span class="mx-2">&gt;</span></li>
+                <li class="text-gray-700"> <a href="{{ route('formulir.penilaianTersedia', [$formulir]) }}"
+                        class="text-blue-600 hover:underline">Kegiatan : {{ $formulir->nama_formulir }} </a> </li>
+                <li><span class="mx-2">&gt;</span></li>
+                <li class="text-gray-700">
+                    <a href="{{ route('formulir.domain-penilaian', [$formulir]) }}"
+                        class="text-blue-600 hover:underline">Domain Kegiatan : {{ $formulir->nama_formulir }} </a>
+                </li>
+                <li><span class="mx-2">&gt;</span></li>
+                <li class="text-gray-700 bo">
+                    {{ $domain->nama_domain }}
+                </li>
+
+            </ol>
+        </nav>
+        {{-- Judul --}}
+
 
         <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
             @foreach ($domain->aspek as $aspek)
@@ -59,7 +80,10 @@
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 @php
 
-                                                    $domainDibuka = $indikator->aspek->domain->formulirs->firstWhere('id', $formulir->id);
+                                                    $domainDibuka = $indikator->aspek->domain->formulirs->firstWhere(
+                                                        'id',
+                                                        $formulir->id,
+                                                    );
                                                     $penilaianUser = $indikator->penilaian
                                                         ->where('user_id', Auth::id())
                                                         ->where('formulir_id', $domainDibuka->id)
@@ -75,7 +99,7 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                @if ($penilaianUser )
+                                                @if ($penilaianUser)
                                                     <span
                                                         class="bg-blue-500 p-3 text-white rounded text-xs font-semibold">Sudah
                                                         Diisi</span>

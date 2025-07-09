@@ -1,9 +1,10 @@
 @extends('dashboard.layout')
+@section('title', 'Daftar Kegiatan Penilaian')
 @section('content')
     <div class="card p-8">
 
         <div class="flex justify-between mb-4">
-            <h4 class="h4">Kegiatan Penilaian</h4>
+            <h4 class="h4">Daftar Kegiatan Penilaian</h4>
 
 
         </div>

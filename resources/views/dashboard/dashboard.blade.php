@@ -4,7 +4,7 @@
     <div class="card p-8">
 
         <div class="flex justify-between mb-4">
-            <h4 class="h4">Kegiatan Penilaian</h4>
+            <h4 class="h4">Rekap Data Parikesit</h4>
 
 
 
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="card mt-8 ">
+    {{-- <div class="card mt-8 ">
         <div class="max-w-xxl border-indigo-500 mx-auto bg-white p-6 rounded shadow">
             <h2 class="text-xl font-semibold mb-4">Generate EPSS</h2>
             <p class="text-sm text-gray-">
@@ -71,7 +71,7 @@
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Generate</button>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 @push('scripts')
 @endpush

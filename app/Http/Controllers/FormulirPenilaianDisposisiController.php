@@ -13,17 +13,18 @@ class FormulirPenilaianDisposisiController extends Controller
     public function tersedia()
     {
 
-        $disposisis = FormulirPenilaianDisposisi::with(['formulir', 'indikator', 'fromProfile', 'toProfile', 'assignedProfile'])->get();
+        $disposisis = FormulirPenilaianDisposisi::with(['formulir', 'indikator', 'fromProfile', 'toProfile', 'assignedProfile'])->get()
+            ->groupBy('formulir.nama_formulir')
+            ->map(function ($disposisis) {
+                return $disposisis->first()->assignedProfile;
+            });
+        // dd($disposisis);
 
-
-        return view('dashboard.disposisi.disposisi-index',compact('disposisis'));
+        return view('dashboard.disposisi.disposisi-index', compact('disposisis'));
     }
 
 
-    public function koreksi($id)
-    {
-
-    }
+    public function koreksi($id) {}
 
     /**
      * Store a newly created resource in storage.

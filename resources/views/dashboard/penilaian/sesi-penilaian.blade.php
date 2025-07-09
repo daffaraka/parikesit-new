@@ -10,12 +10,22 @@
         <div class="flex justify-between items-center border-b pb-4">
             <div class="text-blue-600 font-semibold text-sm">Indikator {{ $indikator->nama_indikator }}</div>
             <div class="space-x-2">
-                <button title="Penjelasan" class="text-yellow-500 hover:text-yellow-600">
-                    💡
-                </button>
-                <button title="Indikator selanjutnya" class="text-blue-600 hover:text-blue-800">
-                    ➡️
-                </button>
+
+
+
+                {{-- @if ($prev_indikator != null)
+                    <a href="{{ route('formulir.penilaianAspek', [$formulir, $domain->nama_domain, $aspek->nama_aspek, $prev_indikator->nama_indikator]) }}"
+                        class="text-blue-600 hover:text-blue-800">
+                        ⬅️
+                    </a>
+                @endif
+
+                  @if ($next_indikator != null)
+                    <a href="{{ route('formulir.penilaianAspek', [$formulir, $domain->nama_domain, $aspek->nama_aspek, $next_indikator->nama_indikator]) }}"
+                        class="text-blue-600 hover:text-blue-800">
+                        ➡️
+                    </a>
+                @endif --}}
             </div>
         </div>
 
@@ -44,7 +54,7 @@
                             : 'block bg-gray-300 border disabled rounded-md p-3 shadow-sm cursor-pointer';
                 @endphp
 
-                    {{$nilaiTerkunci ?? 'gk'}}
+                {{-- {{$nilaiTerkunci ?? 'gk'}} --}}
                 <div class="font-semibold text-sm text-gray-700">{{ $indikator->nama_indikator }}</div>
                 <div class="space-y-2 text-sm">
                     <label for="level1" class="{{ $style }}">
@@ -168,14 +178,30 @@
             <div class="mt-5">
                 <label class="text-sm font-semibold text-gray-700 mb-1 block">Bukti Dukung</label>
                 <div class="text-xs text-gray-500 mb-2">Unggah bukti dalam format .pdf maksimal 3 MB</div>
-                <input type="file" name="bukti_dukung"
-                    class="block w-full text-gray-700 rounded p-5 shadow border-2 text-sm mb-4" />
-
-
+                @if ($dinilai)
+                    <input type="file" name="bukti_dukung" disabled
+                        class="block w-full text-gray-700 rounded p-5 shadow border-2 text-sm mb-4" />
+                    <div class="text-green-500 text-sm">Bukti dukung sudah diunggah</div>
+                @else
+                    <input type="file" name="bukti_dukung"
+                        class="block w-full text-gray-700 rounded p-5 shadow border-2 text-sm mb-4" />
+                @endif
             </div>
 
 
-            <button type="submit" class="bg-indigo-500 p-3 w-full text-white mt-4 rounded-md">Simpan</button>
+            <div class="mt-10">
+                @if ($dinilai)
+                    <a href="{{ route('formulir.isi-domain', [$formulir, $domain->nama_domain]) }}"
+                        class="bg-indigo-500 p-3 w-full text-white mt-4 rounded-md">Kembali</a>
+                @else
+                    <div class="flex justify-between">
+                        <a href="{{ url()->previous() }}"
+                            class="bg-gray-500 p-3 w-50 text-white mt-4 rounded-md text-center">Kembali</a>
+                        <button type="submit" class="bg-indigo-500 p-3 w-50 text-white mt-4 rounded-md">Simpan</button>
+                    </div>
+                @endif
+
+            </div>
 
 
         </form>

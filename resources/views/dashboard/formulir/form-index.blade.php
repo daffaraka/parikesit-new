@@ -1,4 +1,5 @@
 @extends('dashboard.layout')
+@section('title','Formulir')
 @section('content')
     <div class="card p-8">
 

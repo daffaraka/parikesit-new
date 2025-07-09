@@ -3,14 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DomainController;
+use App\Models\FormulirPenilaianDisposisi;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FormulirController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\FormulirPenilaianDisposisiController;
 use App\Http\Controllers\PembinaanController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PenjadwalanController;
-use App\Models\FormulirPenilaianDisposisi;
+use App\Http\Controllers\DokumentasiKegiatanController;
+use App\Http\Controllers\FormulirPenilaianDisposisiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,10 +52,11 @@ Route::middleware('auth')->group(function () {
     Route::get('penilaian', [PenilaianController::class, 'index'])->name('penilaian.index');
     Route::resource('formulir.penilaian', PenilaianController::class)->shallow()->except('index');
     Route::get('formulir/{formulir}/penilaian-tersedia', [PenilaianController::class, 'penilaianTersedia'])->name('formulir.penilaianTersedia');
-    Route::get('formulir/{formulir}/domain-penilaian', [PenilaianController::class, 'domainPenilaian'])->name('formulir.domain-penilaian');
-    Route::get('formulir/{formulir}/domain-penilaian/{domain}', [PenilaianController::class, 'isiDomain'])->name('formulir.isi-domain');
-    Route::get('formulir/{formulir}/domain-penilaian/{domain}/{aspek}/{indikator}', [PenilaianController::class, 'penilaianAspek'])->name('formulir.penilaianAspek');
-    Route::post('formulir/{formulir}/domain-penilaian/{domain}/{aspek}/{indikator}/store-penilaian', [PenilaianController::class, 'store'])->name('formulir.store-penilaian');
+    Route::get('formulir/{formulir}/penilaian-tersedia/domain-penilaian', [PenilaianController::class, 'domainPenilaian'])->name('formulir.domain-penilaian');
+    Route::get('formulir/{formulir}/penilaian-tersedia/domain-penilaian/{domain}', [PenilaianController::class, 'isiDomain'])->name('formulir.isi-domain');
+    Route::get('formulir/{formulir}/penilaian-tersedia/domain-penilaian/{domain}/{aspek}/{indikator}', [PenilaianController::class, 'penilaianAspek'])->name('formulir.penilaianAspek');
+    Route::post('formulir/{formulir}/penilaian-tersedia/domain-penilaian/{domain}/{aspek}/{indikator}/store-penilaian', [PenilaianController::class, 'store'])->name('formulir.store-penilaian');
+
 
     Route::resource('penjadwalan', PenjadwalanController::class);
 
@@ -67,6 +69,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('penjadwalan/{penjadwalan}/pembinaan/{pembinaan}', [PembinaanController::class, 'destroy'])->name('penjadwalan.pembinaan.destroy');
 
 
+    Route::get('dokumentasi', [DokumentasiKegiatanController::class, 'index'])->name('dokumentasi.index');
+    Route::get('dokumentasi/create', [DokumentasiKegiatanController::class, 'create'])->name('dokumentasi.create');
+    Route::post('dokumentasi', [DokumentasiKegiatanController::class, 'store'])->name('dokumentasi.store');
+    Route::get('dokumentasi/{formulir}', [DokumentasiKegiatanController::class, 'show'])->name('dokumentasi.show');
+    Route::get('dokumentasi/{formulir}/edit', [DokumentasiKegiatanController::class, 'edit'])->name('dokumentasi.edit');
+    Route::put('dokumentasi/{formulir}', [DokumentasiKegiatanController::class, 'update'])->name('dokumentasi.update');
+    Route::delete('dokumentasi/{formulir}', [DokumentasiKegiatanController::class, 'destroy'])->name('dokumentasi.destroy');
 
     Route::get('penilaian-selesai', [FormulirPenilaianDisposisiController::class, 'tersedia'])->name('disposisi.penelaian.tersedia');
 

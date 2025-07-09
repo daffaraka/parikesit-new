@@ -1,12 +1,24 @@
 @extends('dashboard.layout')
-
+@section('title', 'Domain Penilaian Kegiatan : '.$formulir->nama_formulir)
 @section('content')
     <div class="space-y-6">
 
-        {{-- Judul --}}
-        <div class="flex justify-between items-center">
+  <div class="flex justify-between items-center">
             <h4 class="text-xl font-semibold text-gray-700">PENILAIAN MANDIRI PER DOMAIN</h4>
         </div>
+        <nav class="bg-white p-4 border-2 rounded-md w-full mb-4">
+            <ol class="list-reset flex text-grey-dark">
+                <li><a href="{{ route('dashboard') }}" class="text-blue-600 hover:underline">Dashboard</a></li>
+                <li><span class="mx-2 ">&gt;</span></li>
+                <li><a href="{{ route('penilaian.index') }}" class="text-blue-600 hover:underline">Penilaian</a></li>
+                <li><span class="mx-2">&gt;</span></li>
+                <li class="text-gray-700"> <a href="{{route('formulir.penilaianTersedia',[$formulir])}}" class="text-blue-600 hover:underline">Kegiatan : {{ $formulir->nama_formulir }} </a> </li>
+                 <li><span class="mx-2">&gt;</span></li>
+                <li class="text-gray-700">Domain Kegiatan : {{ $formulir->nama_formulir }}</li>
+            </ol>
+        </nav>
+        {{-- Judul --}}
+
 
         <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($formulir->domains as $domain)

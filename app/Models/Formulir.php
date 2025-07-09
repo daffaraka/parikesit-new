@@ -32,4 +32,9 @@ class Formulir extends Model
     {
         return $this->belongsToMany(Domain::class, 'formulir_domains');
     }
+
+     public function dokumentasi()
+    {
+        return $this->hasMany(DokumentasiKegiatan::class);
+    }
 }

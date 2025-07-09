@@ -80,7 +80,7 @@ class PenilaianController extends Controller
                     $totalIndikator++;
 
                     // Hitung hanya penilaian untuk formulir & user saat ini (jika pakai filter)
-                    if ($indikator->penilaian->where('formulir_id', $formulir->id)->isNotEmpty()) {
+                    if ($indikator->penilaian->where('formulir_id', $formulir->id)->where('user_id', Auth::user()->id)->isNotEmpty()) {
                         $terisi++;
                     }
                 }
@@ -140,9 +140,7 @@ class PenilaianController extends Controller
     {
 
 
-        // dd($formulir);
         $domain = Domain::where('nama_domain', $nama_domain)->first();
-        // dd($domain->nama_domain);
         $formulir->load('formulir_domains.domain.aspek.indikator.penilaian');
         return view('dashboard.penilaian.isi-domain-aspek-penilaian', compact(['formulir', 'domain']));
     }
@@ -150,24 +148,34 @@ class PenilaianController extends Controller
 
     public function penilaianAspek(Formulir $formulir, $nama_domain, $aspek, $req_indikator)
     {
-        // $domain = Domain::where('formulir_id', $formulir->id)->where('nama_domain', $nama_domain)->first();
+
+
         $domain = Domain::where('nama_domain', $nama_domain)->first();
+
+
+        // dd($req_indikator);
         $aspek = Aspek::where('domain_id', $domain->id)->where('nama_aspek', $aspek)->first();
         $indikator = Indikator::with('penilaian')->where('aspek_id', $aspek->id)->where('nama_indikator', $req_indikator)->first();
         $formulir->load('domains.aspek.indikator');
 
+
+
+
+
         $dinilai = Indikator::with('penilaian')->whereHas('penilaian', function ($query) use ($indikator, $formulir) {
             $query->where('user_id', Auth::user()->id)->where('nilai', '!=', null)->where('indikator_id', $indikator->id)->whereFormulirId($formulir->id);
         })
-
-
-        ->where('nama_indikator', $req_indikator)->first();
+            ->where('nama_indikator', $req_indikator)->first();
 
 
 
-        // dd($dinilai->penilaian);
-        // dd($dinilai);
-        return view('dashboard.penilaian.sesi-penilaian', compact('formulir', 'domain', 'aspek', 'indikator', 'dinilai'));
+        // dd($indikator->id);
+        $next_indikator = Indikator::with('penilaian')->where('id', '>', $indikator->id)->first();
+        $prev_indikator = Indikator::with('penilaian')->where('id', '<', $indikator->id)->first();
+
+
+        // dd($next_indikator, $prev_indikator);
+        return view('dashboard.penilaian.sesi-penilaian', compact('formulir', 'domain', 'aspek', 'indikator', 'dinilai', 'next_indikator', 'prev_indikator'));
     }
 
     /**
@@ -205,35 +213,12 @@ class PenilaianController extends Controller
         return redirect()->back()->with('success', 'Penilaian berhasil disimpan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Formulir $formulir, Penilaian $penilaian)
-    {
-        return view('dashboard.penilaian.penilaian', compact('formulir', 'penilaian'));
-    }
+    // public function prev_indikator(Formulir $formulir, $nama_domain, $aspek, $indikator)
+    // {
+    //     $domain = Domain::where('nama_domain', $nama_domain)->first();
+    //     $aspek = Aspek::where('domain_id', $domain->id)->where('nama_aspek', $aspek)->first();
+    //     $indikator = Indikator::where('aspek_id', $aspek->id)->where('nama_indikator', $indikator)->first();
+    //     return redirect()->route('formulir.penilaianAspek', [$formulir, $domain, $aspek]);
+    // }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Formulir $formulir, Penilaian $penilaian)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Formulir $formulir, Penilaian $penilaian)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Formulir $formulir, Penilaian $penilaian)
-    {
-        //
-    }
 }

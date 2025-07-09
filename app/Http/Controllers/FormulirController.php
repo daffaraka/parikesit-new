@@ -11,9 +11,13 @@ use App\Models\FormulirDomain;
 
 class FormulirController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function __construct() {
+
+
+    }
+
+
     public function index()
     {
         $formulirs = Formulir::with('domains')->latest()->get();

@@ -1,4 +1,5 @@
 @extends('dashboard.layout')
+@section('title', 'Penialian Kegiatan '.$formulir->nama_formulir)
 
 @section('content')
     <div class="space-y-6">
@@ -7,6 +8,19 @@
         <div class="flex justify-between items-center">
             <h4 class="text-xl font-semibold text-gray-700">PENILAIAN MANDIRI</h4>
         </div>
+
+
+
+        <nav class="bg-white p-4 border-2 rounded-md w-full mb-4">
+            <ol class="list-reset flex text-grey-dark">
+                <li><a href="{{ route('dashboard') }}" class="text-blue-600 hover:underline">Dashboard</a></li>
+                <li><span class="mx-2 ">&gt;</span></li>
+                <li><a href="{{ route('penilaian.index') }}" class="text-blue-600 hover:underline">Penilaian</a></li>
+                <li><span class="mx-2">&gt;</span></li>
+                <li class="text-gray-700">Kegiatan : {{$formulir->nama_formulir}}</li>
+            </ol>
+        </nav>
+
 
         {{-- Informasi Tahapan dan Kegiatan --}}
         <div class="grid grid-cols-2 md:grid-cols-1 gap-4">
@@ -74,7 +88,7 @@
                                 $warna = 'bg-green-500';
                             } elseif ($persentase > 80 && $persentase <= 99) {
                                 $warna = 'bg-blue-500';
-                            } elseif($persentase == 100) {
+                            } elseif ($persentase == 100) {
                                 $warna = 'bg-indigo-500';
                             } else {
                                 $warna = 'bg-gray-500';
