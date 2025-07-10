@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FormulirPenilaianDisposisi;
+use App\Models\User;
+use App\Models\Formulir;
 use Illuminate\Http\Request;
+use App\Models\FormulirPenilaianDisposisi;
 
 class FormulirPenilaianDisposisiController extends Controller
 {
@@ -13,14 +15,11 @@ class FormulirPenilaianDisposisiController extends Controller
     public function tersedia()
     {
 
-        $disposisis = FormulirPenilaianDisposisi::with(['formulir', 'indikator', 'fromProfile', 'toProfile', 'assignedProfile'])->get()
-            ->groupBy('formulir.nama_formulir')
-            ->map(function ($disposisis) {
-                return $disposisis->first()->assignedProfile;
-            });
+        $penilaianSelesai = Formulir::whereHas('formulir_penilaian_diposisi')->get();
+        $countMaxPeserta = User::whereRole('walidata')->count();
         // dd($disposisis);
 
-        return view('dashboard.disposisi.disposisi-index', compact('disposisis'));
+        return view('dashboard.disposisi.disposisi-index', compact('penilaianSelesai','countMaxPeserta'));
     }
 
 

@@ -2,9 +2,9 @@
 @section('content')
     <div class="flex justify-between mb-4">
         <h4 class="h4">Pembinaan</h4>
-        {{-- <a href="{{ route('pembinaan.create') }}"
+        <a href="{{ route('pembinaan.create') }}"
                 class="py-3 px-8 bg-blue-600 rounded shadow text-white hover:text-blue-200 hover:bg-gray-800 transform duration-100 ease-in-out">Tambah
-                Pembinaan</a> --}}
+                Pembinaan</a>
 
     </div>
 

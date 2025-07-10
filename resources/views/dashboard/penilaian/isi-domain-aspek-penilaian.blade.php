@@ -9,8 +9,7 @@
         {{-- Breadcumb --}}
         <nav class="bg-white p-4 border-2 rounded-md w-full mb-4">
             <ol class="list-reset flex text-grey-dark">
-                <li><a href="{{ route('dashboard') }}" class="text-blue-600 hover:underline">Dashboard</a></li>
-                <li><span class="mx-2 ">&gt;</span></li>
+
                 <li><a href="{{ route('penilaian.index') }}" class="text-blue-600 hover:underline">Penilaian</a></li>
                 <li><span class="mx-2">&gt;</span></li>
                 <li class="text-gray-700"> <a href="{{ route('formulir.penilaianTersedia', [$formulir]) }}"
@@ -58,6 +57,10 @@
                                             Indikator</th>
                                         <th
                                             class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
+                                            Bobot</th>
+
+                                        <th
+                                            class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
                                             Nilai</th>
                                         <th
                                             class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
@@ -76,6 +79,9 @@
                                                     class="text-gray-800 font-semibold text-md ">
                                                     {{ Str::of($indikator->nama_indikator)->limit(60) }}
                                                 </a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <p class="text-gray-800 font-bold">{{ $indikator->bobot_indikator }} </p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 @php

@@ -37,4 +37,9 @@ class Formulir extends Model
     {
         return $this->hasMany(DokumentasiKegiatan::class);
     }
+
+    public function formulir_penilaian_diposisi()
+    {
+        return $this->hasMany(FormulirPenilaianDisposisi::class);
+    }
 }

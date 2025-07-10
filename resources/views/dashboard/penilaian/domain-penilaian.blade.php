@@ -8,8 +8,7 @@
         </div>
         <nav class="bg-white p-4 border-2 rounded-md w-full mb-4">
             <ol class="list-reset flex text-grey-dark">
-                <li><a href="{{ route('dashboard') }}" class="text-blue-600 hover:underline">Dashboard</a></li>
-                <li><span class="mx-2 ">&gt;</span></li>
+
                 <li><a href="{{ route('penilaian.index') }}" class="text-blue-600 hover:underline">Penilaian</a></li>
                 <li><span class="mx-2">&gt;</span></li>
                 <li class="text-gray-700"> <a href="{{route('formulir.penilaianTersedia',[$formulir])}}" class="text-blue-600 hover:underline">Kegiatan : {{ $formulir->nama_formulir }} </a> </li>
@@ -32,9 +31,7 @@
                             <h5 class="text-md font-bold text-blue-700">{{ $domain->nama_domain }}</h5>
 
 
-                            {{-- <p class="text-gray-800 text-md">
-                            {{ \Carbon\Carbon::parse($domain->created_at)->locale('id')->isoFormat('dddd, D MMMM Y') }}
-                        </p> --}}
+
 
 
 

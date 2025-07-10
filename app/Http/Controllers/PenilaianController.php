@@ -69,28 +69,65 @@ class PenilaianController extends Controller
         $totalIndikator = 0;
         $terisi = 0;
 
-        // Load relasi sampai penilaian
+        // Array untuk menyimpan hasil persentase per domain
+        $dataPersentasePerDomain = [];
+
         $formulir->load('formulir_domains.domain.aspek.indikator.penilaian');
 
         foreach ($formulir->formulir_domains as $formulirDomain) {
             $domain = $formulirDomain->domain;
+            $totalPersentaseDomain = 0;
 
             foreach ($domain->aspek as $aspek) {
                 foreach ($aspek->indikator as $indikator) {
+                    $totalPersentasePerIndikator = 0;
+
                     $totalIndikator++;
 
-                    // Hitung hanya penilaian untuk formulir & user saat ini (jika pakai filter)
-                    if ($indikator->penilaian->where('formulir_id', $formulir->id)->where('user_id', Auth::user()->id)->isNotEmpty()) {
+                    // Hitung hanya penilaian untuk formulir & user saat ini
+                    if (
+                        $indikator->penilaian
+                        ->where('formulir_id', $formulir->id)
+                        ->where('user_id', Auth::id())
+                        ->isNotEmpty()
+                    ) {
                         $terisi++;
                     }
+
+                    foreach ($indikator->penilaian as $penilaian) {
+                        if (
+                            $penilaian->formulir_id == $formulir->id &&
+                            $penilaian->user_id == Auth::id()
+                        ) {
+                            $totalPersentasePerIndikator += (($penilaian->nilai * $indikator->bobot_indikator) / 10) / $indikator->count() ;
+
+                            // dd($penilaian->nilai, $indikator->bobot_indikator);
+                        }
+                    }
+
+                    $totalPersentaseDomain += $totalPersentasePerIndikator;
                 }
             }
+
+            // Simpan data persentase domain berdasarkan ID domain
+            $dataPersentasePerDomain[$domain->id] = [
+                'nama' => $domain->nama_domain,
+                'persentase_domain' => number_format($totalPersentaseDomain,2),
+                'jumlah_aspek' => $domain->aspek->count(),
+            ];
         }
 
         $persentase = $totalIndikator > 0 ? round(($terisi / $totalIndikator) * 100, 2) : 0;
 
-        return view('dashboard.penilaian.penilaian', compact('formulir', 'persentase', 'totalIndikator', 'terisi'));
+        return view('dashboard.penilaian.penilaian', compact(
+            'formulir',
+            'persentase',
+            'totalIndikator',
+            'terisi',
+            'dataPersentasePerDomain' // <- Tambahkan ke view
+        ));
     }
+
 
 
     //  public function penilaianTersedia(Formulir $formulir)
@@ -196,7 +233,8 @@ class PenilaianController extends Controller
             'nilai' => $request->nilai,
             'tanggal_penilaian' => date('Y-m-d'),
             'formulir_id' => $formulir->id,
-            'user_id' =>  Auth::user()->id
+            'user_id' =>  Auth::user()->id,
+            'catatan' => $request->catatan
         ]);
 
         if ($penilaian) {

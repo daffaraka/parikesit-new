@@ -1,5 +1,5 @@
 @extends('dashboard.layout')
-@section('title', 'Penialian Kegiatan '.$formulir->nama_formulir)
+@section('title', 'Penialian Kegiatan ' . $formulir->nama_formulir)
 
 @section('content')
     <div class="space-y-6">
@@ -13,11 +13,10 @@
 
         <nav class="bg-white p-4 border-2 rounded-md w-full mb-4">
             <ol class="list-reset flex text-grey-dark">
-                <li><a href="{{ route('dashboard') }}" class="text-blue-600 hover:underline">Dashboard</a></li>
-                <li><span class="mx-2 ">&gt;</span></li>
+
                 <li><a href="{{ route('penilaian.index') }}" class="text-blue-600 hover:underline">Penilaian</a></li>
                 <li><span class="mx-2">&gt;</span></li>
-                <li class="text-gray-700">Kegiatan : {{$formulir->nama_formulir}}</li>
+                <li class="text-gray-700">Kegiatan : {{ $formulir->nama_formulir }}</li>
             </ol>
         </nav>
 
@@ -140,8 +139,9 @@
                             <tr>
                                 <td class="py-2 px-4 font-semibold">{{ $domain->nama_domain }}</td>
                                 <td class="py-2 px-4">{{ $domain->aspek->count() }}</td>
-                                <td class="py-2 px-4"></td>
-
+                                <td class="py-2 px-4 font-bold text-blue-700">
+                                    {{ $dataPersentasePerDomain[$domain->id]['persentase_domain'] ?? '0.00' }}
+                                </td>
                             </tr>
                         @endforeach
 

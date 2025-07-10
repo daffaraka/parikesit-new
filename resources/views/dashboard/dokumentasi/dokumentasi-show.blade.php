@@ -15,8 +15,7 @@
 
         <nav class="bg-white p-4 border-2 rounded-md w-full mb-4">
             <ol class="list-reset flex text-grey-dark">
-                <li><a href="{{ route('dashboard') }}" class="text-blue-600 hover:underline">Dashboard</a></li>
-                <li><span class="mx-2 ">&gt;</span></li>
+
                 <li><a href="{{ route('dokumentasi.index') }}" class="text-blue-600 hover:underline">Dokumentasi</a></li>
                 <li><span class="mx-2">&gt;</span></li>
                 <li class="text-gray-700">Kegiatan : {{ $formulir->nama_formulir }}</li>

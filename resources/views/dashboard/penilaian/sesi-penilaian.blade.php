@@ -5,6 +5,31 @@
         <h4 class="text-lg font-semibold text-blue-700 text-uppercase mb-3">Aspek {{ strtoupper($aspek->nama_aspek) }}</h4>
     </div>
 
+    <nav class="bg-white p-4 border-2 rounded-md w-full mb-4">
+        <ol class="list-reset flex text-grey-dark">
+
+            <li><a href="{{ route('penilaian.index') }}" class="text-blue-600 hover:underline">Penilaian</a></li>
+            <li><span class="mx-2">&gt;</span></li>
+            <li class="text-gray-700"> <a href="{{ route('formulir.penilaianTersedia', [$formulir]) }}"
+                    class="text-blue-600 hover:underline">Kegiatan : {{ $formulir->nama_formulir }} </a> </li>
+            <li><span class="mx-2">&gt;</span></li>
+            <li class="text-gray-700">
+                <a href="{{ route('formulir.domain-penilaian', [$formulir]) }}" class="text-blue-600 hover:underline">Domain
+                    Kegiatan : {{ $formulir->nama_formulir }} </a>
+            </li>
+            <li><span class="mx-2">&gt;</span></li>
+            <li class="text-gray-700">
+                <a href="{{ route('formulir.isi-domain', [$formulir, $domain->nama_domain]) }}" class="text-blue-600 hover:underline">Domain
+                      {{ $domain->nama_domain }} </a>
+
+            </li>
+            <li><span class="mx-2">&gt;</span></li>
+            <li class="text-gray-700">
+                Indikator {{ $indikator->nama_indikator }}
+            </li>
+        </ol>
+    </nav>
+
     <div class="p-6 bg-white shadow rounded-md space-y-6">
         <!-- Header -->
         <div class="flex justify-between items-center border-b pb-4">
@@ -164,12 +189,12 @@
 
             <!-- Penjelasan -->
             <div class="mt-5">
-                <label class="text-sm font-semibold text-gray-700 mb-1 block">Penjelasan</label>
+                <label class="text-sm font-semibold text-gray-700 mb-1 block">Catatan Penjelasan</label>
 
                 @if ($dinilai)
-                    <textarea rows="4" class="w-full border rounded p-2 text-sm" name="penjelasan" disabled>{{ $dinilai->penilaian->first()->catatan }} </textarea>
+                    <textarea rows="4" class="w-full border rounded p-2 text-sm" name="catatan" disabled>{{ $dinilai->penilaian->first()->catatan }} </textarea>
                 @else
-                    <textarea rows="4" class="w-full border rounded p-2 text-sm" name="penjelasan"
+                    <textarea rows="4" class="w-full border rounded p-2 text-sm" name="catatan"
                         placeholder="Penjelasan indikator..."></textarea>
                 @endif
             </div>

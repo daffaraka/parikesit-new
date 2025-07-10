@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('dokumentasi_kegiatans', function (Blueprint $table) {
             $table->id();
-            $table->string('dokumentasi');
-            $table->string('keterangan');
+            $table->string('undangan'); // Untuk PDF Undangan
+            $table->string('daftar_hadir'); // Untuk PDF Daftar Hadir
+            $table->string('materi'); // Text Materi
+            $table->string('notula'); // Untuk PDF Notula
+            $table->string('media'); // Gambar
             $table->unsignedBigInteger('formulir_id');
             $table->foreign('formulir_id')->references('id')->on('formulirs')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
