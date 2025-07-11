@@ -1,5 +1,5 @@
 @extends('dashboard.layout')
-
+@section('title','Penilaian Indikator '.$indikator->nama_indikator)
 @section('content')
     <div class="flex justify-between items-center">
         <h4 class="text-lg font-semibold text-blue-700 text-uppercase mb-3">Aspek {{ strtoupper($aspek->nama_aspek) }}</h4>
@@ -19,8 +19,9 @@
             </li>
             <li><span class="mx-2">&gt;</span></li>
             <li class="text-gray-700">
-                <a href="{{ route('formulir.isi-domain', [$formulir, $domain->nama_domain]) }}" class="text-blue-600 hover:underline">Domain
-                      {{ $domain->nama_domain }} </a>
+                <a href="{{ route('formulir.isi-domain', [$formulir, $domain->nama_domain]) }}"
+                    class="text-blue-600 hover:underline">Domain
+                    {{ $domain->nama_domain }} </a>
 
             </li>
             <li><span class="mx-2">&gt;</span></li>
@@ -57,16 +58,40 @@
         <form action="{{ route('formulir.store-penilaian', [$formulir, $domain, $aspek, $indikator]) }}" method="POST">
             @csrf
             <!-- Status Pemeriksaan -->
-            <div class="md:flex md:items-center md:justify-between bg-yellow-50 p-4 rounded-md border border-yellow-300">
-                <div class="text-sm font-medium text-gray-700 mb-2 md:mb-0">Status Pemeriksaan</div>
-                <div>
-                    <select class="border border-red-400 text-red-600 bg-white rounded-md px-3 py-2 text-sm">
-                        <option selected>Menunggu Pemeriksaan</option>
-                        <option>Disetujui</option>
-                        <option>Revisi</option>
-                    </select>
-                </div>
-            </div>
+
+            @if ($dinilai)
+                <form action="">
+                    @csrf
+                    <div
+                        class="md:flex md:items-center md:justify-between bg-yellow-50 p-4 rounded-md border border-yellow-300">
+                        <div class="mb-5">
+                            <div class="text-sm font-medium text-gray-700 mb-2 md:mb-0">Status Pemeriksaan <b>(Khusus
+                                    Walidata)</b>
+                            </div>
+                            <div>
+                                <select class="border border-indigo-400 shadow text-indigo-600 bg-white rounded-md px-3 py-2 text-sm">
+                                    <option selected>Menunggu Pemeriksaan</option>
+                                    <option>Disetujui</option>
+                                    <option>Revisi</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 mb-2">
+                            <div class="text-sm font-medium text-gray-700 mb-2 md:mb-0">Koreksi <b>(Khusus
+                                    Walidata)</b>
+                            </div>
+                            <textarea rows="4" class="w-full border-2 border-gray-500 rounded p-2 text-sm" name="koreksi" placeholder="Koreksi dari Walidata..."></textarea>
+
+                        </div>
+                    <button type="submit" class="bg-indigo-500 p-2 w-40 text-white mt-4 rounded-md">Beri Koreksi</button>
+
+                    </div>
+
+
+                </form>
+            @endif
+
 
             <!-- Tingkat Kematangan -->
             <div class="space-y-2 mt-5 font-semibold">
@@ -194,8 +219,7 @@
                 @if ($dinilai)
                     <textarea rows="4" class="w-full border rounded p-2 text-sm" name="catatan" disabled>{{ $dinilai->penilaian->first()->catatan }} </textarea>
                 @else
-                    <textarea rows="4" class="w-full border rounded p-2 text-sm" name="catatan"
-                        placeholder="Penjelasan indikator..."></textarea>
+                    <textarea rows="4" class="w-full border rounded p-2 text-sm" name="catatan" placeholder="Penjelasan indikator..."></textarea>
                 @endif
             </div>
 

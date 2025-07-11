@@ -99,14 +99,16 @@ class PenilaianController extends Controller
                             $penilaian->formulir_id == $formulir->id &&
                             $penilaian->user_id == Auth::id()
                         ) {
-                            $totalPersentasePerIndikator += (($penilaian->nilai * $indikator->bobot_indikator) / 10) / $indikator->count() ;
-
+                            $totalPersentasePerIndikator += (($penilaian->nilai * $indikator->bobot_indikator) / 100) / $domain->aspek->count();  ;
                             // dd($penilaian->nilai, $indikator->bobot_indikator);
                         }
                     }
 
+
+
                     $totalPersentaseDomain += $totalPersentasePerIndikator;
                 }
+                //  dd($domain->aspek->count());
             }
 
             // Simpan data persentase domain berdasarkan ID domain
@@ -116,6 +118,8 @@ class PenilaianController extends Controller
                 'jumlah_aspek' => $domain->aspek->count(),
             ];
         }
+
+        // dd($dataPersentasePerDomain);
 
         $persentase = $totalIndikator > 0 ? round(($terisi / $totalIndikator) * 100, 2) : 0;
 
