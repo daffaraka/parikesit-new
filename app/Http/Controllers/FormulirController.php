@@ -363,7 +363,7 @@ class FormulirController extends Controller
 
             $indikator18 = Indikator::create([
                 'aspek_id' => $aspekPengumpulanData->id,
-                'nama_indikator' => 'Tingkat Kematangan Proses Pengumpulan Data/Akuisisi Data',
+                'nama_indikator' => 'Tingkat Kematangan Proses Pengumpulan Data atau Akuisisi Data',
                 'bobot_indikator' => 100,
             ]);
 

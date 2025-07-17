@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('formulir/{formulir}/penilaian-tersedia/domain-penilaian/{domain}', [PenilaianController::class, 'isiDomain'])->name('formulir.isi-domain');
     Route::get('formulir/{formulir}/penilaian-tersedia/domain-penilaian/{domain}/{aspek}/{indikator}', [PenilaianController::class, 'penilaianAspek'])->name('formulir.penilaianAspek');
     Route::post('formulir/{formulir}/penilaian-tersedia/domain-penilaian/{domain}/{aspek}/{indikator}/store-penilaian', [PenilaianController::class, 'store'])->name('formulir.store-penilaian');
+    Route::post('formulir/{formulir}/penilaian-tersedia/domain-penilaian/{domain}/{aspek}/{indikator}/store-penilaian/{penilaian}', [PenilaianController::class, 'update'])->name('formulir.update-penilaian');
 
 
     Route::resource('penjadwalan', PenjadwalanController::class);
@@ -77,7 +78,9 @@ Route::middleware('auth')->group(function () {
     Route::put('dokumentasi/{formulir}', [DokumentasiKegiatanController::class, 'update'])->name('dokumentasi.update');
     Route::delete('dokumentasi/{formulir}', [DokumentasiKegiatanController::class, 'destroy'])->name('dokumentasi.destroy');
 
-    Route::get('penilaian-selesai', [FormulirPenilaianDisposisiController::class, 'tersedia'])->name('disposisi.penelaian.tersedia');
+    Route::get('penilaian-selesai', [FormulirPenilaianDisposisiController::class, 'tersedia'])->name('disposisi.penilaian.tersedia');
+    Route::get('penilaian-selesai/{formulir}', [FormulirPenilaianDisposisiController::class, 'detail'])->name('disposisi.penilaian.tersedia.detail');
+    Route::get('penilaian-selesai/{opd}/{formulir}/koreksi-penilaian/{domain}', [FormulirPenilaianDisposisiController::class, 'koreksiIsiDomain'])->name('disposisi.koreksi.isi-domain');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

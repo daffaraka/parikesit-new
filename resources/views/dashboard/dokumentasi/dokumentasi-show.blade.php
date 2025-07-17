@@ -24,71 +24,141 @@
 
 
         {{-- Informasi Tahapan dan Kegiatan --}}
-        <div class="grid grid-cols-2 md:grid-cols-1 gap-4">
+        <div class="grid grid-cols-4 md:grid-cols-1 gap-4">
             <!-- Box Kiri -->
-            <div class="col-span-1 border-2 border-blue-400 bg-white p-4 rounded-md shadow-sm">
+            <div class="col-span-4 border-2 border-blue-400 bg-white p-4 rounded-md shadow-sm">
                 <div class="text-md text-blue-600 font-bold mb-4">Tahapan saat ini</div>
-                <div class="text-sm text-blue-700 mb-3">Penilaian Mandiri (1 April 2024 – 31 April 2024)</div>
-                <div class="text-xs text-gray-500 mb-3">Berakhir dalam 4 hari 5 jam 49 menit 24 detik</div>
+                {{-- <div class="text-sm text-blue-700 mb-3">Penilaian Mandiri (1 April 2024 – 31 April 2024)</div> --}}
+                {{-- <div class="text-xs text-gray-500 mb-3">Berakhir dalam 4 hari 5 jam 49 menit 24 detik</div> --}}
                 <div class="border rounded-md p-3 bg-blue-50">
-                    <div class="font-medium text-gray-700 mb-1">Kegiatan Statistik</div>
-                    <div class="text-sm text-gray-800">Kegiatan : <div class="font-bold inline">
+                    {{-- <div class="font-medium text-gray-700 mb-1">Kegiatan Statistik</div> --}}
+                    <div class="text-lg text-gray-800">Kegiatan : <div class="font-bold inline">
                             {{ $formulir->nama_formulir }}
                         </div>
                     </div>
                     <div class="text-sm text-blue-600 underline mt-2">
                         {{ $formulir->created_at->format('Y') }} | {{ $formulir->instansi ?? 'Dinas Lorem Ipsum' }}</div>
+
+
+
+
+
+                    <div class="bg-indigo-100 mt-5 rounded mb-4">
+                        <div class="text-sm text-gray-700 font-medium mb-1">Progres Penilaian Mandiri</div>
+
+
+                        <div class="my-4">
+
+                            @php
+                                if ($persentase <= 20 && $persentase > 0) {
+                                    $warna = 'bg-red-500';
+                                } elseif ($persentase > 20 && $persentase <= 40) {
+                                    $warna = 'bg-yellow-500';
+                                } elseif ($persentase > 40 && $persentase <= 60) {
+                                    $warna = 'bg-orange-500';
+                                } elseif ($persentase > 60 && $persentase <= 80) {
+                                    $warna = 'bg-green-500';
+                                } elseif ($persentase > 80 && $persentase <= 99) {
+                                    $warna = 'bg-blue-500';
+                                } elseif ($persentase == 100) {
+                                    $warna = 'bg-indigo-500';
+                                } else {
+                                    $warna = 'bg-gray-500';
+                                }
+                            @endphp
+
+
+
+                            <div class="w-full bg-gray-200 rounded-full h-5">
+                                <div class="h-5 rounded-full {{ $warna ?? 'bg-white' }}"
+                                    style="width: {{ $persentase }}%">
+                                </div>
+                            </div>
+                            <div class="px-1 mt-2">
+                                <p class="mt-1 text-sm text-gray-700"> {{ $terisi }} dari {{ $totalIndikator }}
+                                    indikator
+                                    <b class="font-weight-bolder">({{ $persentase }}%) </b>
+                                </p>
+                            </div>
+
+                        </div>
+
+                        {{-- <div class="text-xs text-gray-500">Indikator sudah lengkap</div> --}}
+                    </div>
                 </div>
+
+
             </div>
 
-            <!-- Box Kanan -->
-            <div class="border bg-white p-4 rounded-md shadow-sm">
-                <div class="text-sm font-medium text-gray-700 mb-2">Tahapan berikutnya</div>
-                <div class="text-sm text-indigo-600 mb-4">Penilaian Dokumen (1 April 2024 – 31 April 2024)</div>
-
-                <div class="bg-indigo-100 p-3 rounded mb-4">
-                    <div class="text-sm text-gray-700 font-medium mb-1">Progres Penilaian Mandiri</div>
-
-
-                    <div class="my-4">
-
-                        @php
-                            if ($persentase <= 20 && $persentase > 0) {
-                                $warna = 'bg-red-500';
-                            } elseif ($persentase > 20 && $persentase <= 40) {
-                                $warna = 'bg-yellow-500';
-                            } elseif ($persentase > 40 && $persentase <= 60) {
-                                $warna = 'bg-orange-500';
-                            } elseif ($persentase > 60 && $persentase <= 80) {
-                                $warna = 'bg-green-500';
-                            } elseif ($persentase > 80 && $persentase <= 99) {
-                                $warna = 'bg-blue-500';
-                            } elseif ($persentase == 100) {
-                                $warna = 'bg-indigo-500';
-                            } else {
-                                $warna = 'bg-gray-500';
-                            }
-                        @endphp
 
 
 
-                        <div class="w-full bg-gray-200 rounded-full h-5">
-                            <div class="h-5 rounded-full {{ $warna ?? 'bg-white' }}" style="width: {{ $persentase }}%">
+            <div class="col-span-4 border border-gray-300 bg-white p-4 rounded-md shadow-sm">
+                <div class="text-md font-bold text-gray-800 mb-4">Dokumen Terkait</div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-2 gap-4">
+                    <!-- Item 1: PDF Undangan -->
+                    <div class="flex items-center justify-between p-4 border rounded-md bg-white shadow-sm">
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-blue-500 text-xl mr-3"></i>
+                            <div>
+                                <div class="font-semibold text-sm text-gray-800">PDF Undangan</div>
+                                <div class="text-xs text-gray-600 truncate">undangan_penilaian_mandiri.pdf</div>
                             </div>
                         </div>
-                        <div class="px-1 mt-2">
-                            <p class="mt-1 text-sm text-gray-700"> {{ $terisi }} dari {{ $totalIndikator }} indikator
-                                <b class="font-weight-bolder">({{ $persentase }}%) </b>
-                            </p>
-                        </div>
-
+                        <a href="#" class="flex items-center text-gray-700 hover:text-black text-sm">
+                            <i class="fas fa-download mr-1"></i> Download
+                        </a>
                     </div>
 
-                    {{-- <div class="text-xs text-gray-500">Indikator sudah lengkap</div> --}}
-                </div>
+                    <!-- Item 2: PDF Daftar Hadir -->
+                    <div class="flex items-center justify-between p-4 border rounded-md bg-white shadow-sm">
+                        <div class="flex items-center">
+                            <i class="fas fa-users text-green-600 text-xl mr-3"></i>
+                            <div>
+                                <div class="font-semibold text-sm text-gray-800">PDF Daftar Hadir</div>
+                                <div class="text-xs text-gray-600 truncate">daftar_hadir_april.pdf</div>
+                            </div>
+                        </div>
+                        <a href="#" class="flex items-center text-gray-700 hover:text-black text-sm">
+                            <i class="fas fa-download mr-1"></i> Download
+                        </a>
+                    </div>
 
+                    <!-- Item 3: PDF Notula -->
+                    <div class="flex items-center justify-between p-4 border rounded-md bg-white shadow-sm">
+                        <div class="flex items-center">
+                            <i class="fas fa-file-alt text-orange-500 text-xl mr-3"></i>
+                            <div>
+                                <div class="font-semibold text-sm text-gray-800">PDF Notula</div>
+                                <div class="text-xs text-gray-600 truncate">notula_rapat_evaluasi.pdf</div>
+                            </div>
+                        </div>
+                        <a href="#" class="flex items-center text-gray-700 hover:text-black text-sm">
+                            <i class="fas fa-download mr-1"></i> Download
+                        </a>
+                    </div>
+
+                    <!-- Item 4: Media Gambar -->
+                    <div class="flex items-center justify-between p-4 border rounded-md bg-white shadow-sm">
+                        <div class="flex items-center">
+                            <i class="fas fa-image text-red-500 text-xl mr-3"></i>
+                            <div>
+                                <div class="font-semibold text-sm text-gray-800">Media Gambar</div>
+                                <div class="text-xs text-gray-600 truncate">dokumentasi_kegiatan.jpg</div>
+                            </div>
+                        </div>
+                        <a href="#" class="flex items-center text-gray-700 hover:text-black text-sm">
+                            <i class="fas fa-eye mr-1"></i> Lihat
+                        </a>
+                    </div>
+                </div>
             </div>
+
         </div>
+
+
+
 
 
 
@@ -154,8 +224,8 @@
                             class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
                             <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 1 1 5l4 4" />
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M5 1 1 5l4 4" />
                             </svg>
                             <span class="sr-only">Previous</span>
                         </span>

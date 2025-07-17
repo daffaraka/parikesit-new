@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Domain;
 use App\Models\Formulir;
 use Illuminate\Http\Request;
 use App\Models\FormulirPenilaianDisposisi;
@@ -16,10 +17,45 @@ class FormulirPenilaianDisposisiController extends Controller
     {
 
         $penilaianSelesai = Formulir::whereHas('formulir_penilaian_diposisi')->get();
-        $countMaxPeserta = User::whereRole('walidata')->count();
+        $countMaxPeserta = User::whereRole('opd')->count();
+        $progresPenialian = '';
         // dd($disposisis);
 
-        return view('dashboard.disposisi.disposisi-index', compact('penilaianSelesai','countMaxPeserta'));
+        return view('dashboard.disposisi.disposisi-index', compact('penilaianSelesai', 'countMaxPeserta'));
+    }
+
+
+    public function detail($formulir)
+    {
+        $formulir = Formulir::whereNamaFormulir($formulir)->first();
+        $opdsMenilai = User::with('penilaians.formulir.formulir_domains.domain.aspek.indikator')->whereHas('penilaians', function ($query) use ($formulir) {
+            $query->where('formulir_id', $formulir->id);
+        })->get()->map(function ($opd) use ($formulir) {
+            return [
+                'opd' => $opd,
+                'domains' => $opd->penilaians->where('formulir_id', $formulir->id)->map(function ($penilaian) {
+                    return $penilaian->formulir->formulir_domains->map(function ($fd) {
+                        return $fd->domain;
+                    });
+                })->flatten()->unique()
+            ];
+        });
+        // $opdsMenilai = Formulir::with(['formulir_penilaian_diposisi','penilaians'])->where('id', $formulir->id)->first();
+
+        // dd($opdsMenilai);
+        return view('dashboard.disposisi.disposisi-detail', compact('formulir', 'opdsMenilai'));
+    }
+
+
+    public function koreksiIsiDomain($opd, $formulir, $domain)
+    {
+        $opd = User::where('name', $opd)->first();
+
+
+        $formulir = Formulir::where('nama_formulir', $formulir)->first();
+        $domain = Domain::where('nama_domain', $domain)->first();
+        $formulir->load('formulir_domains.domain.aspek.indikator.penilaian');
+        return view('dashboard.disposisi.koreksi-detail-isi-domain', compact('formulir', 'domain', 'opd'));
     }
 
 

@@ -4,6 +4,8 @@
 /public/hot
 /public/storage
 /storage/*.key
+/public/bukti-dukung
+/public/foto-dokumentasi
 /vendor
 .env
 .env.backup

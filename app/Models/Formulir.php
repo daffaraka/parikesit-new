@@ -42,4 +42,9 @@ class Formulir extends Model
     {
         return $this->hasMany(FormulirPenilaianDisposisi::class);
     }
+
+    public function penilaians()
+    {
+        return $this->hasMany(Penilaian::class);
+    }
 }

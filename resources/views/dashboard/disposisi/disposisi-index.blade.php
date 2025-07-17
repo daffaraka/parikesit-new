@@ -9,7 +9,6 @@
 
             </div>
 
-            <hr class="my-4 border-t-2 border-gray-300">
 
 
             @foreach ($penilaianSelesai as $selesai)
@@ -40,10 +39,10 @@
                             class="bg-gray-100 hover:bg-gray-200 text-sm px-3 py-1.5 rounded text-gray-700 flex items-center gap-1">
                             <i class="fas fa-edit"></i> Edit
                         </button> --}}
-                            <button
+                            <a href="{{route('disposisi.penilaian.tersedia.detail',['formulir' => $selesai->nama_formulir] )}}"
                                 class="bg-blue-600 hover:bg-blue-700 text-sm px-3 py-2 rounded text-white flex items-center gap-1">
                                 <i class="fas fa-eye"></i> Lihat
-                            </button>
+                            </a>
                         </div>
                     </div>
 

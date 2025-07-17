@@ -99,7 +99,7 @@ class PenilaianController extends Controller
                             $penilaian->formulir_id == $formulir->id &&
                             $penilaian->user_id == Auth::id()
                         ) {
-                            $totalPersentasePerIndikator += (($penilaian->nilai * $indikator->bobot_indikator) / 100) / $domain->aspek->count();  ;
+                            $totalPersentasePerIndikator += (($penilaian->nilai * $indikator->bobot_indikator) / 100) / $domain->aspek->count();;
                             // dd($penilaian->nilai, $indikator->bobot_indikator);
                         }
                     }
@@ -114,7 +114,7 @@ class PenilaianController extends Controller
             // Simpan data persentase domain berdasarkan ID domain
             $dataPersentasePerDomain[$domain->id] = [
                 'nama' => $domain->nama_domain,
-                'persentase_domain' => number_format($totalPersentaseDomain,2),
+                'persentase_domain' => number_format($totalPersentaseDomain, 2),
                 'jumlah_aspek' => $domain->aspek->count(),
             ];
         }
@@ -209,7 +209,7 @@ class PenilaianController extends Controller
             ->where('nama_indikator', $req_indikator)->first();
 
 
-
+        // dd($dinilai);
         // dd($indikator->id);
         $next_indikator = Indikator::with('penilaian')->where('id', '>', $indikator->id)->first();
         $prev_indikator = Indikator::with('penilaian')->where('id', '<', $indikator->id)->first();
@@ -232,13 +232,26 @@ class PenilaianController extends Controller
             'nilai.required' => 'Tingkat kematangan harus diisi',
         ]);
 
+        $savedFileName = '';
+
+
+        if ($request->hasFile('bukti_dukung')) {
+            $file = $request->file('bukti_dukung');
+            $fileName = $file->getClientOriginalName();
+            $fileExt = $file->getClientOriginalExtension();
+            $savedFileName = time() . '-' . Auth::user()->id . '-' . $fileName . '.' . $fileExt;
+            $file->move('bukti-dukung', $savedFileName);
+        }
+
+
         $penilaian = Penilaian::create([
             'indikator_id' => $indikator,
             'nilai' => $request->nilai,
             'tanggal_penilaian' => date('Y-m-d'),
             'formulir_id' => $formulir->id,
             'user_id' =>  Auth::user()->id,
-            'catatan' => $request->catatan
+            'catatan' => $request->catatan,
+            'bukti_dukung' => 'bukti-dukung/' . $savedFileName ?? '-'
         ]);
 
         if ($penilaian) {
@@ -253,6 +266,19 @@ class PenilaianController extends Controller
         }
 
         return redirect()->back()->with('success', 'Penilaian berhasil disimpan');
+    }
+
+
+
+    public function update(Request $request, Formulir $formulir, $nama_domain, $aspek, $indikator)
+    {
+
+        dd($request->all());
+        $request->validate([
+            'nilai' => 'required|numeric',
+        ], [
+            'nilai.required' => 'Tingkat kematangan harus diisi',
+        ]);
     }
 
     // public function prev_indikator(Formulir $formulir, $nama_domain, $aspek, $indikator)

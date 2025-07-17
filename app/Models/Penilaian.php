@@ -18,11 +18,12 @@ class Penilaian extends Model
         'tanggal_penilaian',
         'user_id',
         'formulir_id',
-        'evaluasi',
+        'bukti_dukung',
+        'dikerjakan_by',
+        'dikoreksi_by',
+        'koreksi',
+        'nilai_koreksi',
     ];
-
-
-
 
     public function indikator()
     {
@@ -37,6 +38,16 @@ class Penilaian extends Model
     public function formulir()
     {
         return $this->belongsTo(Formulir::class);
+    }
+
+    public function dikerjakan_by()
+    {
+        return $this->belongsTo(User::class, 'dikerjakan_by');
+    }
+
+    public function dikoreksi_by()
+    {
+        return $this->belongsTo(User::class, 'dikoreksi_by');
     }
 
 
