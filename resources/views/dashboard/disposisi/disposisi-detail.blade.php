@@ -5,9 +5,9 @@
         <nav class="bg-white p-4 border-2 rounded-md w-full mb-4">
             <ol class="list-reset flex text-grey-dark">
 
-                <li><a href="{{ route('penilaian.index') }}" class="text-blue-600 hover:underline">Koreksi Penilaian</a></li>
+                <li><a href="{{ route('disposisi.penilaian.tersedia') }}" class="text-blue-600 hover:underline">Koreksi Penilaian</a></li>
                 <li><span class="mx-2">&gt;</span></li>
-                <li class="text-gray-700"> <a href="{{ route('formulir.penilaianTersedia', [$formulir]) }}"
+                <li class="text-gray-700"> <a href="{{ route('disposisi.penilaian.tersedia.detail', [$formulir->nama_formulir]) }}"
                         class="text-blue-600 hover:underline">Kegiatan Selesai : {{ $formulir->nama_formulir }} </a> </li>
                 <li><span class="mx-2">&gt;</span></li>
 
@@ -96,7 +96,7 @@
 
                     @foreach ($opdsMenilai as $index => $opd)
                         <div class="my-4">
-                            <div id="accordion-collapse-{{ $index }}" data-accordion="collapse">
+                            <div id="accordion-collapse-{{ $index }}" data-accordion="collapse" class="shadow border-indigo-400">
                                 <h2 id="accordion-collapse-heading-{{ $index }}">
                                     <button type="button"
                                         class="flex items-center justify-between w-full p-5 font-medium rtl:text-right border border-b-0 border-blue-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-800 gap-3"
@@ -119,8 +119,8 @@
                                         class="p-5 border border-b-0 border-gray-200 text-black bg-blue-100 dark:border-gray-700 dark:bg-gray-900">
 
                                         <div class="mt-6">
-                                            <div class="font-semibold text-gray-700 mb-2">Nilai Indeks Pembangunan Statistik {{ $opd['opd']->name }}</div>
-                                            </div>
+                                            <div class="font-semibold text-gray-700 mb-2">Nilai Indeks Pembangunan Statistik
+                                                {{ $opd['opd']->name }}</div>
                                             <div class="overflow-x-auto">
                                                 <table
                                                     class="min-w-full border text-sm text-left text-gray-700 bg-white shadow rounded">
@@ -142,8 +142,10 @@
                                                                     {{ $domain->nama_domain }}</td>
                                                                 <td class="py-2 px-4">{{ $domain->aspek->count() }}</td>
                                                                 <td class="py-4 px-4 font-bold text-blue-700">
-                                                                    <a href="{{route('disposisi.koreksi.isi-domain',[$opd['opd']->name, $formulir->nama_formulir, $domain->nama_domain])}}" class="text-white hover:underline bg-gray-900 p-2 rounded">
-                                                                        <i class="fas fa-pencil-alt mr-2"></i>  Menuju Koreksi
+                                                                    <a href="{{ route('disposisi.koreksi.isi-domain', [$opd['opd']->name, $formulir->nama_formulir, $domain->nama_domain]) }}"
+                                                                        class="text-white hover:underline bg-gray-900 p-2 rounded">
+                                                                        <i class="fas fa-pencil-alt mr-2"></i> Menuju
+                                                                        Koreksi
                                                                     </a>
                                                                     {{-- {{ $dataPersentasePerDomain[$domain->id]['persentase_domain'] ?? '0.00' }} --}}
                                                                 </td>
@@ -158,6 +160,7 @@
 
                                     </div>
                                 </div>
+
 
 
                             </div>

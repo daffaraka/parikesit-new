@@ -153,6 +153,7 @@
 
         <form action="{{ route('formulir.store-penilaian', [$formulir, $domain, $aspek, $indikator]) }}" method="POST"
             enctype="multipart/form-data">
+            @csrf
             <!-- Tingkat Kematangan -->
             <div class="space-y-2 mt-5 font-semibold">
 
@@ -259,7 +260,7 @@
                         <button type="submit" class="bg-indigo-500 p-3 w-50 text-white mt-4 rounded-md">Simpan</button>
 
                         <a href="{{ route('formulir.isi-domain', [$formulir, $domain->nama_domain]) }}"
-                        class="bg-gray-600 shadow hover:bg-gray-800 dark:hover:bg-gray-700  p-3 w-full text-white mt-4 rounded-md text-center">Kembali</a>
+                        class="bg-gray-600 shadow hover:bg-gray-800 dark:hover:bg-gray-700  p-3 text-white mt-4 rounded-md text-center">Kembali</a>
                     </div>
                 @endif
 

@@ -9,12 +9,14 @@
         <nav class="bg-white p-4 border-2 rounded-md w-full mb-4">
             <ol class="list-reset flex text-grey-dark">
 
-                <li><a href="{{ route('penilaian.index') }}" class="text-blue-600 hover:underline">Penilaian</a></li>
+                <li><a href="{{ route('disposisi.penilaian.tersedia') }}" class="text-blue-600 hover:underline">Koreksi
+                        Penilaian</a></li>
                 <li><span class="mx-2">&gt;</span></li>
-                <li class="text-gray-700"> <a href="{{ route('formulir.penilaianTersedia', [$formulir]) }}"
-                        class="text-blue-600 hover:underline">Kegiatan : {{ $formulir->nama_formulir }} </a> </li>
+                <li class="text-gray-700"> <a
+                        href="{{ route('disposisi.penilaian.tersedia.detail', [$formulir->nama_formulir]) }}"
+                        class="text-blue-600 hover:underline">Kegiatan Selesai : {{ $formulir->nama_formulir }} </a> </li>
                 <li><span class="mx-2">&gt;</span></li>
-                <li class="text-gray-700">Domain Kegiatan : {{ $formulir->nama_formulir }}</li>
+                <li class="text-gray-700">Domain Kegiatan : {{ $domain->nama_domain }}</li>
             </ol>
         </nav>
         {{-- Judul --}}
@@ -118,12 +120,23 @@
                                 </thead>
                                 <tbody class="bg-white">
                                     @foreach ($aspek->indikator as $indikator)
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 truncate"
+                                        @php
+
+                                            $domainDibuka = $indikator->aspek->domain->formulirs->firstWhere(
+                                                'id',
+                                                $formulir->id,
+                                            );
+                                            $penilaianUser = $indikator->penilaian
+                                                ->where('user_id', Auth::id())
+                                                ->where('formulir_id', $domainDibuka->id)
+                                                ->first();
+                                        @endphp
+                                        <tr class="{{$penilaianUser->nilai_koreksi != 0 ? 'bg-green-300' : ''}}">
+                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200  truncate max-w-20"
                                                 title="{{ $indikator->nama_indikator }}">
                                                 <a href="{{ route('formulir.penilaianAspek', [$formulir, $domain->nama_domain, $aspek->nama_aspek, $indikator->nama_indikator]) }}"
-                                                    class="text-gray-800 font-semibold text-md ">
-                                                    {{ Str::of($indikator->nama_indikator)->limit(20) }}
+                                                    class="text-gray-800 font-semibold text-md w-40 line-clamp-1 break-all">
+                                                    {{ Str::of($indikator->nama_indikator)->limit(40) }}
                                                 </a>
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -131,17 +144,7 @@
                                                 </p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                @php
 
-                                                    $domainDibuka = $indikator->aspek->domain->formulirs->firstWhere(
-                                                        'id',
-                                                        $formulir->id,
-                                                    );
-                                                    $penilaianUser = $indikator->penilaian
-                                                        ->where('user_id', Auth::id())
-                                                        ->where('formulir_id', $domainDibuka->id)
-                                                        ->first();
-                                                @endphp
 
                                                 @if ($penilaianUser && $domainDibuka->id == $formulir->id)
                                                     <span class="text-black rounded text-md font-bold">
@@ -151,8 +154,10 @@
                                                     <span class="text-red-500">- </span>
                                                 @endif
                                             </td>
-                                            <td>
-
+                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <span class="text-black rounded text-md font-bold">
+                                                    {{ $penilaianUser->nilai_koreksi ?? '-' }}
+                                                </span>
                                             </td>
                                             <td>
 
@@ -169,10 +174,10 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <a href="{{ route('formulir.penilaianAspek', [$formulir, $domain->nama_domain, $aspek->nama_aspek, $indikator->nama_indikator]) }}"
+                                                <a href="{{ route('disposisi.koreksi.indikator.beri-koreksi', [$opd->name, $formulir->nama_formulir, $domain->nama_domain, $aspek->nama_aspek, $indikator->nama_indikator]) }}"
                                                     class="text-blue-500 hover:text-blue-700 font-normal text-sm">
                                                     <i
-                                                        class="fad fa-external-link-alt text-md mr-1 bg-green-500 text-white p-4 rounded ml-2"></i>
+                                                        class="fad fa-external-link-alt text-md mr-1 bg-indigo-500 text-white p-4 rounded ml-2"></i>
 
                                                 </a>
                                             </td>

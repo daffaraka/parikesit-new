@@ -81,6 +81,8 @@ Route::middleware('auth')->group(function () {
     Route::get('penilaian-selesai', [FormulirPenilaianDisposisiController::class, 'tersedia'])->name('disposisi.penilaian.tersedia');
     Route::get('penilaian-selesai/{formulir}', [FormulirPenilaianDisposisiController::class, 'detail'])->name('disposisi.penilaian.tersedia.detail');
     Route::get('penilaian-selesai/{opd}/{formulir}/koreksi-penilaian/{domain}', [FormulirPenilaianDisposisiController::class, 'koreksiIsiDomain'])->name('disposisi.koreksi.isi-domain');
+    Route::get('penilaian-selesai/{opd}/{formulir}/penilaian-tersedia/domain-penilaian/{domain}/{aspek}/{indikator}/beri-koreksi', [FormulirPenilaianDisposisiController::class, 'koreksi'])->name('disposisi.koreksi.indikator.beri-koreksi');
+    Route::post('penilaian-selesai/{opd}/{formulir}/penilaian-tersedia/domain-penilaian/{domain}/{aspek}/{indikator}/store/', [FormulirPenilaianDisposisiController::class, 'storeKoreksi'])->name('disposisi.koreksi.indikator.store-koreksi');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

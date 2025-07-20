@@ -23,6 +23,7 @@ class Penilaian extends Model
         'dikoreksi_by',
         'koreksi',
         'nilai_koreksi',
+        'tanggal_dikoreksi',
     ];
 
     public function indikator()
