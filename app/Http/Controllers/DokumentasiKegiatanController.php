@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Formulir;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\FileDokumentasi;
 use App\Models\DokumentasiKegiatan;
 
 class DokumentasiKegiatanController extends Controller
@@ -24,7 +26,7 @@ class DokumentasiKegiatanController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.dokumentasi.dokumentasi-create');
     }
 
     /**
@@ -32,7 +34,83 @@ class DokumentasiKegiatanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+        // dd($request->all());
+        // $request->validate([
+        //     'nama_dokumentasi' => 'required',
+        //     'bukti_dukung_undangan' => 'required|mimes:pdf',
+        //     'daftar_hadir' => 'required|mimes:pdf',
+        //     'materi' => 'required|mimes:pdf',
+        //     'notula' => 'required|mimes:pdf',
+        //     'files' => 'nullable|array',
+        //     'files.*' => 'required|mimes:jpeg,png,jpg,gif,mp4,mp3,avi,flv',
+        // ], [
+        //     'nama_dokumentasi.required' => 'Nama Dokumentasi harus diisi',
+        //     'bukti_dukung_undangan.required' => 'Bukti Dukung harus diisi',
+        //     'bukti_dukung_undangan.mimes' => 'Bukti Dukung harus PDF',
+        //     'daftar_hadir.required' => 'Daftar Hadir harus diisi',
+        //     'daftar_hadir.mimes' => 'Daftar Hadir harus PDF',
+        //     'materi.required' => 'Materi harus diisi',
+        //     'materi.mimes' => 'Materi harus PDF',
+        //     'notula.required' => 'Notula harus diisi',
+        //     'notula.mimes' => 'Notula harus PDF',
+        //     'files.*.required' => 'File harus diisi',
+        //     'files.*.mimes' => 'File harus berupa gambar atau video',
+        // ]);
+
+
+        $judul = Str::slug($request->judul_dokumentasi);
+        // dd($judul);
+        $data = [];
+        $data['judul_dokumentasi'] = $request->judul_dokumentasi;
+
+        // Daftar field file tunggal sesuai model
+        $fileFields = [
+            'bukti_dukung_undangan',
+            'daftar_hadir',
+            'materi',
+            'notula',
+        ];
+
+        foreach ($fileFields as $field) {
+            $file = $request->file($field);
+            if ($file) {
+                // Misal: simpan ke storage/app/dokumentasi/
+
+                $filename = $file->getClientOriginalName();
+                $filSaved = $field.'-'.$request->judul_dokumentasi.'-'.time().'.'.$file->getClientOriginalExtension();
+
+                // dd($filSaved);
+                $path = $file->storeAs('foto-dokumentasi/'.$judul, $filSaved);
+                $data[$field] = $path;
+
+            } else {
+                $data[$field] = null;
+            }
+        }
+
+        // Simpan ke model
+        $kegiatan = DokumentasiKegiatan::create($data);
+
+        // Kalau ada files[] tambahan (bukti tambahan), bisa ditangani terpisah
+        $files = $request->file('files');
+        if ($files && is_array($files)) {
+            foreach ($files as $file) {
+                if ($file) {
+                    $filename = $file->getClientOriginalName();
+                    $fileext = $file->getClientOriginalExtension();
+                    $path = $file->storeAs('dokumentasi/file-media', $filename);
+
+                    // Contoh simpan ke tabel terpisah dengan relasi
+                    $kegiatan->file_dokumentasi()->create([
+                        'filename' => $filename,
+                        'fileext' => $fileext,
+                        'path' => $path
+                    ]);
+                }
+            }
+        }
     }
 
     /**
@@ -40,11 +118,11 @@ class DokumentasiKegiatanController extends Controller
      */
     public function show(Formulir $formulir)
     {
-     $totalIndikator = 0;
+        $totalIndikator = 0;
         $terisi = 0;
 
         // Load relasi sampai penilaian
-        $formulir->load(['formulir_domains.domain.aspek.indikator.penilaian','dokumentasi']);
+        $formulir->load(['formulir_domains.domain.aspek.indikator.penilaian', 'dokumentasi']);
 
         foreach ($formulir->formulir_domains as $formulirDomain) {
             $domain = $formulirDomain->domain;
@@ -65,7 +143,7 @@ class DokumentasiKegiatanController extends Controller
 
 
         // dd($formulir);
-        return view('dashboard.dokumentasi.dokumentasi-show', compact('formulir','persentase', 'totalIndikator', 'terisi'));
+        return view('dashboard.dokumentasi.dokumentasi-show', compact('formulir', 'persentase', 'totalIndikator', 'terisi'));
     }
 
     /**

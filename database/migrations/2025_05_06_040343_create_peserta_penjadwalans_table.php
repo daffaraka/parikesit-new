@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('peserta_pembinaans', function (Blueprint $table) {
+        Schema::create('peserta_penjadwalans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('penjadwalan_id');
             $table->unsignedBigInteger('peserta_id');
 
+
+            $table->text('ringkasan_pembinaan');
+            $table->text('bukti_pembinaan');
+            $table->text('pemateri');
 
             $table->softDeletes();
             $table->timestamps();

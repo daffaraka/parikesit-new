@@ -7,6 +7,11 @@
             <h4 class="h4">Dokumentasi</h4>
 
 
+            <div class="">
+                <a href="{{ route('dokumentasi.create') }}"
+                    class="p-2 px-4 bg-blue-500 text-white hover:bg-blue-700 hover:text-white ease-in-out transition duration-100 border rounded-md flex items-center">
+                    <i class="fad fa-plus mr-2"></i> Tambah Dokumentasi</a>
+            </div>
         </div>
 
         <hr class="my-4 border-t-2 border-gray-300">

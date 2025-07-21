@@ -11,20 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembinaans', function (Blueprint $table) {
+        Schema::create('file_dokumentasis', function (Blueprint $table) {
             $table->id();
-
+            $table->unsignedBigInteger('pembinaan_id');
             $table->unsignedBigInteger('created_by_id');
-            $table->string('judul_pembinaan');
-            $table->string('bukti_dukung_undangan_pembinaan'); // Untuk PDF Undangan
-            $table->string('daftar_hadir_pembinaan'); // Untuk PDF Daftar Hadir
-            $table->string('materi_pembinaan'); // Text Materi
-            $table->string('notula_pembinaan'); // Untuk PDF Notula
+            $table->text('nama_file');
+            $table->enum('tipe_file', ['gambar', 'video', 'pdf', 'word', 'excel', 'powerpoint', 'audio', 'zip', 'rar']);
 
-
+            $table->foreign('pembinaan_id')->references('id')->on('pembinaans')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-
             $table->softDeletes();
+
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembinaans');
+        Schema::dropIfExists('file_dokumentasis');
     }
 };

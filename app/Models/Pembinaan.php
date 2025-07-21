@@ -11,33 +11,32 @@ class Pembinaan extends Model
 
 
     protected $fillable = [
-        'profile_id',
-        'peserta_id',
-        'penjadwalan_id',
+        'created_by_id',
         'judul_pembinaan',
-        'tanggal_pembinaan',
-        'ringkasan_pembinaan',
-        'bukti_pembinaan',
-        'pemateri',
+        'bukti_dukung_undangan_pembinaan',
+        'daftar_hadir_pembinaan',
+        'materi_pembinaan',
+        'notula_pembinaan',
+
     ];
 
     public function profile()
     {
-        return $this->belongsTo(User::class, 'profile_id');
+        return $this->belongsTo(User::class, 'created_by_id');
     }
 
-    public function peserta()
-    {
-        return $this->belongsTo(PesertaPembinaan::class, 'peserta_id');
-    }
+    // public function peserta()
+    // {
+    //     return $this->belongsTo(PesertaPembinaan::class, 'peserta_id');
+    // }
 
-    public function penjadwalan()
-    {
-        return $this->belongsTo(Penjadwalan::class, 'penjadwalan_id');
-    }
+    // public function penjadwalan()
+    // {
+    //     return $this->belongsTo(Penjadwalan::class, 'penjadwalan_id');
+    // }
 
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
+    // public function creator()
+    // {
+    //     return $this->belongsTo(User::class, 'created_by');
+    // }
 }

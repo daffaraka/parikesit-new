@@ -11,13 +11,17 @@ class DokumentasiKegiatan extends Model
 
 
     protected $fillable = [
-        'dokumentasi',
-        'keterangan',
-        'formulir_id'
+        'created_by_id',
+        'judul_dokumentasi',
+        'bukti_dukung_undangan_dokumentasi',
+        'daftar_hadir_dokumentasi',
+        'materi_dokumentasi',
+        'notula_dokumentasi',
     ];
 
-    public function formulir()
+
+   public function profile()
     {
-        return $this->belongsTo(Formulir::class, 'formulir_id', 'id');
+        return $this->belongsTo(User::class, 'created_by_id');
     }
 }

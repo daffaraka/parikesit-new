@@ -61,13 +61,17 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('penjadwalan', PenjadwalanController::class);
 
-    Route::get('pembinaan', [PembinaanController::class, 'index'])->name('pembinaan.index');
     Route::get('penjadwalan/{penjadwalan}/pembinaan', [PembinaanController::class, 'show'])->name('penjadwalan.pembinaan.show');
     Route::get('penjadwalan/{penjadwalan}/pembinaan/create', [PembinaanController::class, 'create'])->name('penjadwalan.pembinaan.create');
     Route::post('penjadwalan/{penjadwalan}/pembinaan', [PembinaanController::class, 'store'])->name('penjadwalan.pembinaan.store');
     Route::get('penjadwalan/{penjadwalan}/pembinaan/{pembinaan}/edit', [PembinaanController::class, 'edit'])->name('penjadwalan.pembinaan.edit');
     Route::put('penjadwalan/{penjadwalan}/pembinaan/{pembinaan}', [PembinaanController::class, 'update'])->name('penjadwalan.pembinaan.update');
     Route::delete('penjadwalan/{penjadwalan}/pembinaan/{pembinaan}', [PembinaanController::class, 'destroy'])->name('penjadwalan.pembinaan.destroy');
+
+
+
+
+    Route::resource('pembinaan', PembinaanController::class);
 
 
     Route::get('dokumentasi', [DokumentasiKegiatanController::class, 'index'])->name('dokumentasi.index');

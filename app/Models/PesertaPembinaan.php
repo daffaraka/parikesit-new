@@ -12,7 +12,10 @@ class PesertaPembinaan extends Model
     protected $fillable =
     [
         'penjadwalan_id',
-        'peserta_id'
+        'peserta_id',
+        'ringkasan_pembinaan',
+        'bukti_pembinaan',
+        'pemateri'
     ];
 
 

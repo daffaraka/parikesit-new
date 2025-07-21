@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dokumentasi_kegiatans', function (Blueprint $table) {
+        Schema::create('file_pembinaans', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('pembinaan_id');
             $table->unsignedBigInteger('created_by_id');
+            $table->text('nama_file');
+            $table->enum('tipe_file', ['gambar', 'video', 'pdf', 'word', 'excel', 'powerpoint', 'audio', 'zip', 'rar']);
 
-            $table->string('judul_dokumentasi');
-            $table->string('bukti_dukung_undangan_dokumentasi'); // Untuk PDF Undangan
-            $table->string('daftar_hadir_dokumentasi'); // Untuk PDF Daftar Hadir
-            $table->string('materi_dokumentasi'); // Text Materi
-            $table->string('notula_dokumentasi'); // Untuk PDF Notula
 
-            $table->timestamps();
+
+            $table->foreign('pembinaan_id')->references('id')->on('pembinaans')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('created_by_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->softDeletes();
 
-            $table->foreign('created_by_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->timestamps();
         });
     }
 
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dokumentasi_kegiatans');
+        Schema::dropIfExists('peserta_pembinaan');
     }
 };

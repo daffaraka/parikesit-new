@@ -1,10 +1,13 @@
 @extends('dashboard.layout')
 @section('content')
     <div class="flex justify-between mb-4">
-        <h4 class="h4">Pembinaan</h4>
-        <a href="{{ route('pembinaan.create') }}"
-                class="py-3 px-8 bg-blue-600 rounded shadow text-white hover:text-blue-200 hover:bg-gray-800 transform duration-100 ease-in-out">Tambah
-                Pembinaan</a>
+        <div class="">
+            <h4 class="h4">Pembinaan</h4>
+
+        </div>
+        <a href="{{ route('pembinaan.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded shadow">+
+            Tambah
+            Pembinaan</a>
 
     </div>
 
@@ -31,68 +34,68 @@
 
     <div class="pembinaan-belum-selesai">
         <h2 class="text-lg font-semibold mb-4">Pembinaan Belum Selesai</h2>
-  <div class="grid grid-cols-3 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-6">
+        <div class="grid grid-cols-3 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-6">
 
 
-        @foreach ($pembinaanBelumSelesai as $pembinaan)
-            <div class="col-span-1">
-                <div class="border rounded-lg shadow bg-white">
-                    <div class="h-4 w-full bg-orange-300 rounded-t-lg"></div>
+            @foreach ($pembinaanBelumSelesai as $pembinaan)
+                <div class="col-span-1">
+                    <div class="border rounded-lg shadow bg-white">
+                        <div class="h-4 w-full bg-orange-300 rounded-t-lg"></div>
 
-                    <div class="p-6">
-                        <div class="flex xl:flex md:flex-none justify-between">
-                            <h2 class="text-lg font-semibold mb-2">{{ $pembinaan->judul_jadwal }}</h2>
+                        <div class="p-6">
+                            <div class="flex xl:flex md:flex-none justify-between">
+                                <h2 class="text-lg font-semibold mb-2">{{ $pembinaan->judul_jadwal }}</h2>
 
 
+                            </div>
+                            <div class="text-sm text-gray-500 flex items-center mb-2">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M6 2a1 1 0 011 1v1h6V3a1 1 0 112 0v1h1a2 2 0 012 2v1H3V6a2 2 0 012-2h1V3a1 1 0 011-1zM3 9h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                </svg>
+                                {{ \Carbon\Carbon::parse($pembinaan->tanggal_jadwal)->format('d M Y') }}
+                            </div>
+
+                            @php
+                                $now = \Carbon\Carbon::now();
+                                $jadwal = \Carbon\Carbon::parse($pembinaan->tanggal_jadwal);
+                                $style = 'bg-yellow-200 text-yellow-800';
+                                if ($jadwal->isFuture()) {
+                                    $style = 'bg-blue-200 text-blue-800';
+                                } elseif ($jadwal->isToday()) {
+                                    $style = 'bg-green-200 text-green-800';
+                                } elseif ($jadwal->isPast()) {
+                                    $style = 'bg-red-200 text-red-800';
+                                }
+                            @endphp
+
+                            <span class="inline-block {{ $style }} text-xs px-3 py-1 rounded mb-3">
+                                {{ $jadwal->isFuture() ? 'Akan Datang' : ($jadwal->isToday() ? 'Berlangsung Hari Ini' : 'Terlewat') }}
+                            </span>
+                            <p class="text-sm text-gray-700 mb-3">{{ Str::limit($pembinaan->keterangan_jadwal, 100) }}</p>
+                            <div class="text-sm text-gray-600 mb-1"><strong>Peserta:</strong>
+                                {{ $pembinaan->peserta_pembinaan->count() ?? 'N/A' }} orang</div>
+                            <div class="text-sm text-gray-600 mb-1"><strong>Lokasi:</strong> {{ $pembinaan->lokasi }}</div>
+                            <div class="text-sm text-gray-600 mb-4"><strong>Penyelenggara:</strong>
+                                {{ $pembinaan->penyelenggara ?? 'BPS' }}</div>
+                            <div class="flex space-x-2">
+                                {{-- <a href="#" class="bg-gray-800 text-white text-sm px-4 py-2 rounded hover:bg-gray-600">Materi</a> --}}
+                                <a href="{{ route('penjadwalan.show', $pembinaan->id) }}"
+                                    class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-800">Detail</a>
+
+                                <a href="{{ route('penjadwalan.pembinaan.show', $pembinaan->id) }}"
+                                    class="border border-green-600 text-green-600 text-sm px-4 py-2 rounded hover:bg-green-500 hover:text-white">Selesaikan
+                                    Penugasan</a>
+                            </div>
                         </div>
-                        <div class="text-sm text-gray-500 flex items-center mb-2">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M6 2a1 1 0 011 1v1h6V3a1 1 0 112 0v1h1a2 2 0 012 2v1H3V6a2 2 0 012-2h1V3a1 1 0 011-1zM3 9h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                            </svg>
-                            {{ \Carbon\Carbon::parse($pembinaan->tanggal_jadwal)->format('d M Y') }}
-                        </div>
 
-                        @php
-                            $now = \Carbon\Carbon::now();
-                            $jadwal = \Carbon\Carbon::parse($pembinaan->tanggal_jadwal);
-                            $style = 'bg-yellow-200 text-yellow-800';
-                            if ($jadwal->isFuture()) {
-                                $style = 'bg-blue-200 text-blue-800';
-                            } elseif ($jadwal->isToday()) {
-                                $style = 'bg-green-200 text-green-800';
-                            } elseif ($jadwal->isPast()) {
-                                $style = 'bg-red-200 text-red-800';
-                            }
-                        @endphp
-
-                        <span class="inline-block {{ $style }} text-xs px-3 py-1 rounded mb-3">
-                            {{ $jadwal->isFuture() ? 'Akan Datang' : ($jadwal->isToday() ? 'Berlangsung Hari Ini' : 'Terlewat') }}
-                        </span>
-                        <p class="text-sm text-gray-700 mb-3">{{ Str::limit($pembinaan->keterangan_jadwal, 100) }}</p>
-                        <div class="text-sm text-gray-600 mb-1"><strong>Peserta:</strong>
-                            {{ $pembinaan->peserta_pembinaan->count() ?? 'N/A' }} orang</div>
-                        <div class="text-sm text-gray-600 mb-1"><strong>Lokasi:</strong> {{ $pembinaan->lokasi }}</div>
-                        <div class="text-sm text-gray-600 mb-4"><strong>Penyelenggara:</strong>
-                            {{ $pembinaan->penyelenggara ?? 'BPS' }}</div>
-                        <div class="flex space-x-2">
-                            {{-- <a href="#" class="bg-gray-800 text-white text-sm px-4 py-2 rounded hover:bg-gray-600">Materi</a> --}}
-                            <a href="{{ route('penjadwalan.show', $pembinaan->id) }}"
-                                class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-800">Detail</a>
-
-                            <a href="{{ route('penjadwalan.pembinaan.show', $pembinaan->id) }}"
-                                class="border border-green-600 text-green-600 text-sm px-4 py-2 rounded hover:bg-green-500 hover:text-white">Selesaikan
-                                Penugasan</a>
-                        </div>
                     </div>
-
                 </div>
-            </div>
-        @endforeach
+            @endforeach
 
 
 
-    </div>
+        </div>
 
     </div>
 
