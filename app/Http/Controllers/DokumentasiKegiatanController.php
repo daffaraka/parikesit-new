@@ -79,34 +79,40 @@ class DokumentasiKegiatanController extends Controller
                 // Misal: simpan ke storage/app/dokumentasi/
 
                 $filename = $file->getClientOriginalName();
-                $filSaved = $field.'-'.$request->judul_dokumentasi.'-'.time().'.'.$file->getClientOriginalExtension();
+                $filSaved = $field . '-' . $request->judul_dokumentasi . '-' . time() . '.' . $file->getClientOriginalExtension();
 
                 // dd($filSaved);
-                $path = $file->storeAs('foto-dokumentasi/'.$judul, $filSaved);
+                $path = $file->storeAs('foto-dokumentasi/' . $judul, $filSaved);
                 $data[$field] = $path;
-
             } else {
                 $data[$field] = null;
             }
         }
 
         // Simpan ke model
-        $kegiatan = DokumentasiKegiatan::create($data);
+        $kegiatan = DokumentasiKegiatan::create([
+            'judul_dokumentasi' => $request->judul_dokumentasi,
+            'bukti_dukung_undangan' => $data['bukti_dukung_undangan'],
+            'daftar_hadir' => $data['daftar_hadir'],
+            'materi' => $data['materi'],
+            'notula' => $data['notula'],
+        ]);
 
         // Kalau ada files[] tambahan (bukti tambahan), bisa ditangani terpisah
         $files = $request->file('files');
         if ($files && is_array($files)) {
-            foreach ($files as $file) {
+            foreach ($files as $index => $file) {
                 if ($file) {
                     $filename = $file->getClientOriginalName();
+                    $filSaved = 'media -' . $index . '-' . $request->judul_dokumentasi . '-' . time() . '.' . $file->getClientOriginalExtension();
                     $fileext = $file->getClientOriginalExtension();
-                    $path = $file->storeAs('dokumentasi/file-media', $filename);
+                    $path = $file->storeAs('foto-dokumentasi/' . $judul, $filename);
 
                     // Contoh simpan ke tabel terpisah dengan relasi
                     $kegiatan->file_dokumentasi()->create([
-                        'filename' => $filename,
-                        'fileext' => $fileext,
-                        'path' => $path
+                        'nama_file' => 'foto-dokumentasi/'.$judul.'/'. $filSaved,
+                        'tipe_file' => $fileext,
+                        'dokumentasi_id' => $kegiatan->id
                     ]);
                 }
             }
