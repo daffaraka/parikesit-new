@@ -23,21 +23,20 @@
                     {{-- <i class="fas fa-check-circle text-green-500 mr-2"></i> <span>Domain tersedia</span> --}}
                     {{-- @endif --}}
                     <div class="flex xl:flex md:flex-none justify-between mt-4">
-                        <h2 class="text-lg font-semibold mb-2">{{ $dok->nama_formulir }}</h2>
+                        <h2 class="text-lg font-semibold mb-2">{{ $dok->judul_dokumentasi }}</h2>
                     </div>
                     <div class="text-sm text-gray-500 flex items-center mb-2">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                             <path
                                 d="M6 2a1 1 0 011 1v1h6V3a1 1 0 112 0v1h1a2 2 0 012 2v1H3V6a2 2 0 012-2h1V3a1 1 0 011-1zM3 9h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                         </svg>
-                        {{ \Carbon\Carbon::parse($dok->tanggal_dibuat)->locale('id')->isoFormat('dddd, D MMMM Y') }}
+                        {{ \Carbon\Carbon::parse($dok->created_at)->locale('id')->isoFormat('dddd, D MMMM Y') }}
                     </div>
                     <p class="text-sm text-gray-700 mb-3">
                         @php
-                            $countDok = count($dok->dokumentasi);
+                            $countDok = count($dok->file_dokumentasi);
                         @endphp
                         <b>
-
 
                             @if ($countDok > 0)
                                 Dokumentasi tersedia

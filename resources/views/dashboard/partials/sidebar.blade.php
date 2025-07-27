@@ -64,22 +64,21 @@
 
 
 
-        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'walidata' )
-            <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Informasi</p>
 
-            <a href="{{ route('pembinaan.index') }}"
-                class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-                <i class="fad fa-whistle text-xs mr-2"></i>
-                Pembinaan
-            </a>
-            <!-- end link -->
+        <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Informasi</p>
 
-                    <a href="{{ route('dokumentasi.index') }}"
+        <a href="{{ route('pembinaan.index') }}"
             class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-            <i class="fad fa-camera text-xs mr-2"></i>
-            Dokumentasi
+            <i class="fad fa-whistle text-xs mr-2"></i>
+            Pembinaan
         </a>
-
+        <!-- end link -->
+        @if (Auth::user()->role == 'opd')
+            <a href="{{ route('dokumentasi.index') }}"
+                class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+                <i class="fad fa-camera text-xs mr-2"></i>
+                Dokumentasi
+            </a>
         @endif
 
 

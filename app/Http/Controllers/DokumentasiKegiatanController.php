@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\FileDokumentasi;
 use App\Models\DokumentasiKegiatan;
+use Illuminate\Support\Facades\Auth;
 
 class DokumentasiKegiatanController extends Controller
 {
@@ -15,7 +16,7 @@ class DokumentasiKegiatanController extends Controller
      */
     public function index()
     {
-        $dokumentasis = Formulir::with('dokumentasi')->latest()->get();
+        $dokumentasis = DokumentasiKegiatan::with('file_dokumentasi')->get();
 
         // dd($formulirs);
         return view('dashboard.dokumentasi.dokumentasi-index', compact('dokumentasis'));
@@ -35,29 +36,32 @@ class DokumentasiKegiatanController extends Controller
     public function store(Request $request)
     {
 
-
-        // dd($request->all());
-        // $request->validate([
-        //     'nama_dokumentasi' => 'required',
-        //     'bukti_dukung_undangan' => 'required|mimes:pdf',
-        //     'daftar_hadir' => 'required|mimes:pdf',
-        //     'materi' => 'required|mimes:pdf',
-        //     'notula' => 'required|mimes:pdf',
-        //     'files' => 'nullable|array',
-        //     'files.*' => 'required|mimes:jpeg,png,jpg,gif,mp4,mp3,avi,flv',
-        // ], [
-        //     'nama_dokumentasi.required' => 'Nama Dokumentasi harus diisi',
-        //     'bukti_dukung_undangan.required' => 'Bukti Dukung harus diisi',
-        //     'bukti_dukung_undangan.mimes' => 'Bukti Dukung harus PDF',
-        //     'daftar_hadir.required' => 'Daftar Hadir harus diisi',
-        //     'daftar_hadir.mimes' => 'Daftar Hadir harus PDF',
-        //     'materi.required' => 'Materi harus diisi',
-        //     'materi.mimes' => 'Materi harus PDF',
-        //     'notula.required' => 'Notula harus diisi',
-        //     'notula.mimes' => 'Notula harus PDF',
-        //     'files.*.required' => 'File harus diisi',
-        //     'files.*.mimes' => 'File harus berupa gambar atau video',
-        // ]);
+        $request->validate([
+            'judul_dokumentasi' => 'required',
+            'bukti_dukung_undangan' => 'required|mimes:pdf|max:5120',
+            'daftar_hadir' => 'required|mimes:pdf|max:5120',
+            'materi' => 'required|mimes:pdf|max:5120',
+            'notula' => 'required|mimes:pdf|max:5120',
+            'files' => 'nullable|array',
+            'files.*' => 'required|mimes:jpeg,png,jpg,gif,mp4,mp3,avi,flv|max:5120',
+        ], [
+            'judul_dokumentasi.required' => 'Nama Dokumentasi harus diisi',
+            'bukti_dukung_undangan.required' => 'Bukti Dukung harus diisi',
+            'bukti_dukung_undangan.mimes' => 'Bukti Dukung harus PDF',
+            'bukti_dukung_undangan.max' => 'Bukti Dukung maximal 5mb',
+            'daftar_hadir.required' => 'Daftar Hadir harus diisi',
+            'daftar_hadir.mimes' => 'Daftar Hadir harus PDF',
+            'daftar_hadir.max' => 'Daftar Hadir maximal 5mb',
+            'materi.required' => 'Materi harus diisi',
+            'materi.mimes' => 'Materi harus PDF',
+            'materi.max' => 'Materi maximal 5mb',
+            'notula.required' => 'Notula harus diisi',
+            'notula.mimes' => 'Notula harus PDF',
+            'notula.max' => 'Notula maximal 5mb',
+            'files.*.required' => 'File harus diisi',
+            'files.*.mimes' => 'File harus berupa gambar atau video',
+            'files.*.max' => 'File maximal 5mb',
+        ]);
 
 
         $judul = Str::slug($request->judul_dokumentasi);
@@ -82,20 +86,22 @@ class DokumentasiKegiatanController extends Controller
                 $filSaved = $field . '-' . $request->judul_dokumentasi . '-' . time() . '.' . $file->getClientOriginalExtension();
 
                 // dd($filSaved);
-                $path = $file->storeAs('foto-dokumentasi/' . $judul, $filSaved);
+                $path = $file->storeAs('file-dokumentasi/' . $judul, $filSaved,'public');
                 $data[$field] = $path;
             } else {
                 $data[$field] = null;
             }
         }
 
+        // dd($data);
         // Simpan ke model
         $kegiatan = DokumentasiKegiatan::create([
+            'created_by_id' => Auth::user()->id,
             'judul_dokumentasi' => $request->judul_dokumentasi,
-            'bukti_dukung_undangan' => $data['bukti_dukung_undangan'],
-            'daftar_hadir' => $data['daftar_hadir'],
-            'materi' => $data['materi'],
-            'notula' => $data['notula'],
+            'bukti_dukung_undangan_dokumentasi' => $data['bukti_dukung_undangan'],
+            'daftar_hadir_dokumentasi' => $data['daftar_hadir'],
+            'materi_dokumentasi' => $data['materi'],
+            'notula_dokumentasi' => $data['notula'],
         ]);
 
         // Kalau ada files[] tambahan (bukti tambahan), bisa ditangani terpisah
@@ -104,52 +110,36 @@ class DokumentasiKegiatanController extends Controller
             foreach ($files as $index => $file) {
                 if ($file) {
                     $filename = $file->getClientOriginalName();
-                    $filSaved = 'media -' . $index . '-' . $request->judul_dokumentasi . '-' . time() . '.' . $file->getClientOriginalExtension();
+                    $filSaved = 'media-' . $index . '-' . $request->judul_dokumentasi . '-' . time() . '.' . $file->getClientOriginalExtension();
                     $fileext = $file->getClientOriginalExtension();
-                    $path = $file->storeAs('foto-dokumentasi/' . $judul, $filename);
+                    $path = $file->storeAs('file-dokumentasi/' . $judul . '/media', $filSaved,'public');
 
+
+                    // dd($path);
                     // Contoh simpan ke tabel terpisah dengan relasi
                     $kegiatan->file_dokumentasi()->create([
-                        'nama_file' => 'foto-dokumentasi/'.$judul.'/'. $filSaved,
+                        'nama_file' => 'file-dokumentasi/' . $judul . '/media/' . $filSaved,
                         'tipe_file' => $fileext,
                         'dokumentasi_id' => $kegiatan->id
                     ]);
                 }
             }
         }
-    }
 
+
+        return redirect()->route('dokumentasi.index')->with('success', 'Dokumentasi berhasil dibuat');
+    }
     /**
      * Display the specified resource.
      */
-    public function show(Formulir $formulir)
+    public function show(DokumentasiKegiatan $dokumentasiKegiatan)
     {
-        $totalIndikator = 0;
-        $terisi = 0;
-
-        // Load relasi sampai penilaian
-        $formulir->load(['formulir_domains.domain.aspek.indikator.penilaian', 'dokumentasi']);
-
-        foreach ($formulir->formulir_domains as $formulirDomain) {
-            $domain = $formulirDomain->domain;
-
-            foreach ($domain->aspek as $aspek) {
-                foreach ($aspek->indikator as $indikator) {
-                    $totalIndikator++;
-
-                    // Hitung hanya penilaian untuk formulir & user saat ini (jika pakai filter)
-                    if ($indikator->penilaian->where('formulir_id', $formulir->id)->isNotEmpty()) {
-                        $terisi++;
-                    }
-                }
-            }
-        }
-
-        $persentase = $totalIndikator > 0 ? round(($terisi / $totalIndikator) * 100, 2) : 0;
 
 
-        // dd($formulir);
-        return view('dashboard.dokumentasi.dokumentasi-show', compact('formulir', 'persentase', 'totalIndikator', 'terisi'));
+        $dokumentasiKegiatan->load('file_dokumentasi');
+
+        // dd($dokumentasiKegiatan);
+        return view('dashboard.dokumentasi.dokumentasi-show', compact('dokumentasiKegiatan'));
     }
 
     /**
@@ -157,7 +147,8 @@ class DokumentasiKegiatanController extends Controller
      */
     public function edit(DokumentasiKegiatan $dokumentasiKegiatan)
     {
-        //
+        $dokumentasiKegiatan->load('file_dokumentasi');
+        return view('dashboard.dokumentasi.dokumentasi-edit',compact('dokumentasiKegiatan'));
     }
 
     /**
@@ -165,7 +156,32 @@ class DokumentasiKegiatanController extends Controller
      */
     public function update(Request $request, DokumentasiKegiatan $dokumentasiKegiatan)
     {
-        //
+          $request->validate([
+            'judul_dokumentasi' => 'required',
+            'bukti_dukung_undangan' => 'required|mimes:pdf|max:5120',
+            'daftar_hadir' => 'required|mimes:pdf|max:5120',
+            'materi' => 'required|mimes:pdf|max:5120',
+            'notula' => 'required|mimes:pdf|max:5120',
+            'files' => 'nullable|array',
+            'files.*' => 'required|mimes:jpeg,png,jpg,gif,mp4,mp3,avi,flv|max:5120',
+        ], [
+            'judul_dokumentasi.required' => 'Nama Dokumentasi harus diisi',
+            'bukti_dukung_undangan.required' => 'Bukti Dukung harus diisi',
+            'bukti_dukung_undangan.mimes' => 'Bukti Dukung harus PDF',
+            'bukti_dukung_undangan.max' => 'Bukti Dukung maximal 5mb',
+            'daftar_hadir.required' => 'Daftar Hadir harus diisi',
+            'daftar_hadir.mimes' => 'Daftar Hadir harus PDF',
+            'daftar_hadir.max' => 'Daftar Hadir maximal 5mb',
+            'materi.required' => 'Materi harus diisi',
+            'materi.mimes' => 'Materi harus PDF',
+            'materi.max' => 'Materi maximal 5mb',
+            'notula.required' => 'Notula harus diisi',
+            'notula.mimes' => 'Notula harus PDF',
+            'notula.max' => 'Notula maximal 5mb',
+            'files.*.required' => 'File harus diisi',
+            'files.*.mimes' => 'File harus berupa gambar atau video',
+            'files.*.max' => 'File maximal 5mb',
+        ]);
     }
 
     /**
@@ -173,6 +189,8 @@ class DokumentasiKegiatanController extends Controller
      */
     public function destroy(DokumentasiKegiatan $dokumentasiKegiatan)
     {
-        //
+       $dokumentasiKegiatan->delete();
+
+       return redirect()->route('dokumentasi.index')->with('success', 'Dokumentasi berhasil dihapus');
     }
 }

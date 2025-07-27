@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FilePembinaan;
 use App\Models\User;
 use App\Models\Pembinaan;
 use App\Models\Penjadwalan;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,12 +18,10 @@ class PembinaanController extends Controller
     public function index()
     {
 
-        $pembinaanSelesai = Penjadwalan::whereHas('pembinaan')->get();
-
-        $pembinaanBelumSelesai = Penjadwalan::whereDoesntHave('pembinaan')->get();
+        $pembinaans = Pembinaan::with('file_pembinaan')->get();
 
 
-        return view('dashboard.pembinaan.pembinaan-index', compact('pembinaanSelesai','pembinaanBelumSelesai'));
+        return view('dashboard.pembinaan.pembinaan-index', compact('pembinaans'));
     }
 
     /**
@@ -29,54 +29,110 @@ class PembinaanController extends Controller
      */
     public function create()
     {
-        $pesertas = User::whereIn('role',['opd','walidata'])->get();
-        return view('dashboard.pembinaan.pembinaan-create',compact('pesertas'));
+        return view('dashboard.pembinaan.pembinaan-create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,Pembinaan $pembinaan)
+    public function store(Request $request, Pembinaan $pembinaan)
     {
 
-        $pembinaan->load(['peserta_pembinaan' => function ($query) {
-            $query->where('peserta_id', auth()->id());
-        }]);
-
-
-        dd($pembinaan);
+       
         $request->validate([
-            'ringkasan_pembinaan' => 'required|string|max:255',
-            'bukti_pembinaan' => 'required|file|mimes:jpg,png,webp,svg,jpeg|max:4096',
-            'pemateri' => 'required|string',
+            'judul_pembinaan' => 'required',
+            'bukti_dukung_undangan' => 'required|mimes:pdf|max:5120',
+            'daftar_hadir' => 'required|mimes:pdf|max:5120',
+            'materi' => 'required|mimes:pdf|max:5120',
+            'notula' => 'required|mimes:pdf|max:5120',
+            'files' => 'nullable|array',
+            'files.*' => 'required|mimes:jpeg,png,jpg,gif,mp4,mp3,avi,flv|max:5120',
         ], [
-            'ringkasan_pembinaan.required' => 'Ringkasan pembinaan harus diisi',
-            'ringkasan_pembinaan.string' => 'Ringkasan pembinaan harus berupa string',
-            'ringkasan_pembinaan.max' => 'Ringkasan pembinaan maksimal 255 karakter',
-            'bukti_pembinaan.required' => 'Bukti pembinaan harus diisi',
-            'bukti_pembinaan.file' => 'Bukti pembinaan harus berupa file',
-            'bukti_pembinaan.mimes' => 'Bukti pembinaan harus berupa jpg,png,webp,svg,jpeg',
-            'pemateri.required' => 'Pemateri harus diisi',
-            'pemateri.string' => 'Pemateri harus berupa string',
-            'pemateri.max' => 'Pemateri maksimal 255 karakter',
+            'judul_pembinaan.required' => 'Nama pembinaan harus diisi',
+            'bukti_dukung_undangan.required' => 'Bukti Dukung harus diisi',
+            'bukti_dukung_undangan.mimes' => 'Bukti Dukung harus PDF',
+            'bukti_dukung_undangan.max' => 'Bukti Dukung maximal 5mb',
+            'daftar_hadir.required' => 'Daftar Hadir harus diisi',
+            'daftar_hadir.mimes' => 'Daftar Hadir harus PDF',
+            'daftar_hadir.max' => 'Daftar Hadir maximal 5mb',
+            'materi.required' => 'Materi harus diisi',
+            'materi.mimes' => 'Materi harus PDF',
+            'materi.max' => 'Materi maximal 5mb',
+            'notula.required' => 'Notula harus diisi',
+            'notula.mimes' => 'Notula harus PDF',
+            'notula.max' => 'Notula maximal 5mb',
+            'files.*.required' => 'File harus diisi',
+            'files.*.mimes' => 'File harus berupa gambar atau video',
+            'files.*.max' => 'File maximal 5mb',
         ]);
 
-        $bukti_pembinaan = $request->file('bukti_pembinaan');
-        $nama_bukti_pembinaan = $pembinaan->id.'_'.time().'.'.$bukti_pembinaan->getClientOriginalExtension();
-        $bukti_pembinaan->storeAs('bukti_pembinaan', $nama_bukti_pembinaan);
 
-        Pembinaan::create([
-            'profile_id' => Auth::user()->id,
-            'peserta_id' => $pembinaan->peserta_pembinaan->first()->id,
-            'penjadwalan_id' => $pembinaan->id,
-            'judul_pembinaan' => $pembinaan->judul_jadwal,
-            'tanggal_pembinaan' => $pembinaan->tanggal_jadwal,
-            'ringkasan_pembinaan' => $request->ringkasan_pembinaan,
-            'bukti_pembinaan' => $nama_bukti_pembinaan,
-            'pemateri' => $pembinaan->nama_pemateri,
+        $judul = Str::slug($request->judul_pembinaan);
+        // dd($judul);
+        $data = [];
+        $data['judul_pembinaan'] = $request->judul_pembinaan;
+
+        // Daftar field file tunggal sesuai model
+        $fileFields = [
+            'bukti_dukung_undangan',
+            'daftar_hadir',
+            'materi',
+            'notula',
+        ];
+
+        foreach ($fileFields as $field) {
+            $file = $request->file($field);
+            if ($file) {
+                // Misal: simpan ke storage/app/pembinaan/
+
+                $filename = $file->getClientOriginalName();
+                $filSaved = $field . '-' . $request->judul_pembinaan . '-' . time() . '.' . $file->getClientOriginalExtension();
+
+                // dd($filSaved);
+                $path = $file->storeAs('file-pembinaan/' . $judul, $filSaved,'public');
+                $data[$field] = $path;
+            } else {
+                $data[$field] = null;
+            }
+        }
+
+        // dd($data);
+        // Simpan ke model
+        $kegiatan = Pembinaan::create([
+            'created_by_id' => Auth::user()->id,
+            'judul_pembinaan' => $request->judul_pembinaan,
+            'bukti_dukung_undangan_pembinaan' => $data['bukti_dukung_undangan'],
+            'daftar_hadir_pembinaan' => $data['daftar_hadir'],
+            'materi_pembinaan' => $data['materi'],
+            'notula_pembinaan' => $data['notula'],
         ]);
 
-        return redirect()->back()->with('success', 'Pembinaan berhasil ditambahkan');
+        // Kalau ada files[] tambahan (bukti tambahan), bisa ditangani terpisah
+        $files = $request->file('files');
+        if ($files && is_array($files)) {
+            foreach ($files as $index => $file) {
+                if ($file) {
+                    $filename = $file->getClientOriginalName();
+                    $filSaved = 'media-' . $index . '-' . $request->judul_pembinaan . '-' . time() . '.' . $file->getClientOriginalExtension();
+                    $fileext = $file->getClientOriginalExtension();
+                    $path = $file->storeAs('file-pembinaan/' . $judul . '/media', $filSaved,'public');
+
+
+                    // dd($path);
+                    // Contoh simpan ke tabel terpisah dengan relasi
+                    $kegiatan->file_pembinaan()->create([
+                        'nama_file' => 'file-pembinaan/' . $judul . '/media/' . $filSaved,
+                        'tipe_file' => $fileext,
+                        'pembinaan_id' => $kegiatan->id
+                    ]);
+                }
+            }
+        }
+
+        
+        
+
+        return redirect()->route('pembinaan.index')->with('success', 'Pembinaan berhasil ditambahkan');
     }
 
     /**
@@ -87,7 +143,7 @@ class PembinaanController extends Controller
 
 
         // dd($pembinaan);
-        return view('dashboard.pembinaan.pembinaan-show',compact('penjadwalan'));
+        return view('dashboard.pembinaan.pembinaan-show', compact('penjadwalan'));
     }
 
 

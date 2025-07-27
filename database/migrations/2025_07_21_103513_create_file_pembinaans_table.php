@@ -14,14 +14,12 @@ return new class extends Migration
         Schema::create('file_pembinaans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('pembinaan_id');
-            $table->unsignedBigInteger('created_by_id');
             $table->text('nama_file');
-            $table->enum('tipe_file', ['gambar', 'video', 'pdf', 'word', 'excel', 'powerpoint', 'audio', 'zip', 'rar']);
+            $table->enum('tipe_file', ['png', 'jpg', 'jpeg', 'mp4', 'pdf', 'docx', 'xlsx', 'pptx', 'zip', 'rar']);
 
 
 
             $table->foreign('pembinaan_id')->references('id')->on('pembinaans')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('created_by_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->softDeletes();
 
             $table->timestamps();

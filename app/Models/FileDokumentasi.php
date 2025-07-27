@@ -13,7 +13,7 @@ class FileDokumentasi extends Model
     [
         'nama_file',
         'tipe_file',
-        'dokumentasi_id',
+        'dokumentasi_kegiatan_id',
     ];
 
 

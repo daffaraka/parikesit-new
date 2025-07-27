@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\FileDokumentasi;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DokumentasiKegiatan extends Model
 {
@@ -23,5 +24,10 @@ class DokumentasiKegiatan extends Model
    public function profile()
     {
         return $this->belongsTo(User::class, 'created_by_id');
+    }
+
+    public function file_dokumentasi()
+    {
+        return $this->hasMany(FileDokumentasi::class);
     }
 }

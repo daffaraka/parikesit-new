@@ -77,10 +77,10 @@ Route::middleware('auth')->group(function () {
     Route::get('dokumentasi', [DokumentasiKegiatanController::class, 'index'])->name('dokumentasi.index');
     Route::get('dokumentasi/create', [DokumentasiKegiatanController::class, 'create'])->name('dokumentasi.create');
     Route::post('dokumentasi', [DokumentasiKegiatanController::class, 'store'])->name('dokumentasi.store');
-    Route::get('dokumentasi/{formulir}', [DokumentasiKegiatanController::class, 'show'])->name('dokumentasi.show');
-    Route::get('dokumentasi/{formulir}/edit', [DokumentasiKegiatanController::class, 'edit'])->name('dokumentasi.edit');
-    Route::put('dokumentasi/{formulir}', [DokumentasiKegiatanController::class, 'update'])->name('dokumentasi.update');
-    Route::delete('dokumentasi/{formulir}', [DokumentasiKegiatanController::class, 'destroy'])->name('dokumentasi.destroy');
+    Route::get('dokumentasi/{dokumentasiKegiatan}', [DokumentasiKegiatanController::class, 'show'])->name('dokumentasi.show');
+    Route::get('dokumentasi/{dokumentasiKegiatan}/edit', [DokumentasiKegiatanController::class, 'edit'])->name('dokumentasi.edit');
+    Route::put('dokumentasi/{dokumentasiKegiatan}', [DokumentasiKegiatanController::class, 'update'])->name('dokumentasi.update');
+    Route::delete('dokumentasi/{dokumentasiKegiatan}', [DokumentasiKegiatanController::class, 'destroy'])->name('dokumentasi.destroy');
 
     Route::get('penilaian-selesai', [FormulirPenilaianDisposisiController::class, 'tersedia'])->name('disposisi.penilaian.tersedia');
     Route::get('penilaian-selesai/{formulir}', [FormulirPenilaianDisposisiController::class, 'detail'])->name('disposisi.penilaian.tersedia.detail');
