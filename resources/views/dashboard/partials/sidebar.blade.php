@@ -73,7 +73,7 @@
             Pembinaan
         </a>
         <!-- end link -->
-        @if (Auth::user()->role == 'opd')
+        @if (Auth::user()->role == 'admin')
             <a href="{{ route('dokumentasi.index') }}"
                 class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
                 <i class="fad fa-camera text-xs mr-2"></i>
