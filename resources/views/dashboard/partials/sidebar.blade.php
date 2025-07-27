@@ -39,7 +39,7 @@
         <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Penilaian</p>
 
 
-        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'opd')
+        @if (Auth::user()->role == 'opd')
             <!-- link -->
             <a href="{{ route('penilaian.index') }}"
                 class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
@@ -47,13 +47,15 @@
                 Penilaian Mandiri
             </a>
         @endif
-        @if (Auth::user()->role == 'admin')
+        @if (Auth::user()->role == 'opd')
             <a href="{{ route('formulir.index') }}"
                 class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
                 <i class="fad fa-folder text-xs mr-2"></i>
                 Kegiatan Penilaian
             </a>
+        @endif
 
+            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'walidata')
             <a href="{{ route('disposisi.penilaian.tersedia') }}"
                 class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
                 <i class="fad fa-check-circle text-xs mr-2"></i>
@@ -73,7 +75,7 @@
             Pembinaan
         </a>
         <!-- end link -->
-        @if (Auth::user()->role == 'opd')
+        @if (Auth::user()->role == 'admin')
             <a href="{{ route('dokumentasi.index') }}"
                 class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
                 <i class="fad fa-camera text-xs mr-2"></i>
