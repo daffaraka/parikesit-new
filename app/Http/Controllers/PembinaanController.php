@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FilePembinaan;
 use App\Models\User;
 use App\Models\Pembinaan;
 use App\Models\Penjadwalan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\FilePembinaan;
 use Illuminate\Support\Facades\Auth;
 
 class PembinaanController extends Controller
@@ -18,7 +18,7 @@ class PembinaanController extends Controller
     public function index()
     {
 
-        $pembinaans = Pembinaan::with('file_pembinaan')->get();
+        $pembinaans = Pembinaan::with('file_pembinaan')->latest()->get();
 
 
         return view('dashboard.pembinaan.pembinaan-index', compact('pembinaans'));
@@ -38,7 +38,7 @@ class PembinaanController extends Controller
     public function store(Request $request, Pembinaan $pembinaan)
     {
 
-       
+
         $request->validate([
             'judul_pembinaan' => 'required',
             'bukti_dukung_undangan' => 'required|mimes:pdf|max:5120',
@@ -67,7 +67,11 @@ class PembinaanController extends Controller
         ]);
 
 
-        $judul = Str::slug($request->judul_pembinaan);
+        $judul = Str::slug($request->judul_pembinaan.'-'.time());
+        $path = 'file-pembinaan/' . $judul;
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
         // dd($judul);
         $data = [];
         $data['judul_pembinaan'] = $request->judul_pembinaan;
@@ -83,13 +87,16 @@ class PembinaanController extends Controller
         foreach ($fileFields as $field) {
             $file = $request->file($field);
             if ($file) {
-                // Misal: simpan ke storage/app/pembinaan/
+                
+                // if(File::exists)
+
+
 
                 $filename = $file->getClientOriginalName();
                 $filSaved = $field . '-' . $request->judul_pembinaan . '-' . time() . '.' . $file->getClientOriginalExtension();
 
                 // dd($filSaved);
-                $path = $file->storeAs('file-pembinaan/' . $judul, $filSaved,'public');
+                $path = $file->move('file-pembinaan/' . $judul.'/.', $filSaved);
                 $data[$field] = $path;
             } else {
                 $data[$field] = null;
@@ -115,7 +122,7 @@ class PembinaanController extends Controller
                     $filename = $file->getClientOriginalName();
                     $filSaved = 'media-' . $index . '-' . $request->judul_pembinaan . '-' . time() . '.' . $file->getClientOriginalExtension();
                     $fileext = $file->getClientOriginalExtension();
-                    $path = $file->storeAs('file-pembinaan/' . $judul . '/media', $filSaved,'public');
+                    $path = $file->move('file-pembinaan/' . $judul . '/media', $filSaved);
 
 
                     // dd($path);
@@ -129,8 +136,8 @@ class PembinaanController extends Controller
             }
         }
 
-        
-        
+
+
 
         return redirect()->route('pembinaan.index')->with('success', 'Pembinaan berhasil ditambahkan');
     }
@@ -141,9 +148,10 @@ class PembinaanController extends Controller
     public function show(Pembinaan $pembinaan)
     {
 
+        $pembinaan->load('file_pembinaan');
 
         // dd($pembinaan);
-        return view('dashboard.pembinaan.pembinaan-show', compact('penjadwalan'));
+        return view('dashboard.pembinaan.pembinaan-show', compact('pembinaan'));
     }
 
 
@@ -153,7 +161,9 @@ class PembinaanController extends Controller
      */
     public function edit(Pembinaan $pembinaan)
     {
-        //
+          $pembinaan->load('file_pembinaan');
+
+          return view('dashboard.pembinaan.pembinaan-edit',compact('pembinaan'));
     }
 
 
@@ -172,6 +182,6 @@ class PembinaanController extends Controller
      */
     public function destroy(Pembinaan $pembinaan)
     {
-        //
+        
     }
 }

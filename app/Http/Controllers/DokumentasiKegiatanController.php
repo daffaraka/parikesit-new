@@ -16,7 +16,7 @@ class DokumentasiKegiatanController extends Controller
      */
     public function index()
     {
-        $dokumentasis = DokumentasiKegiatan::with('file_dokumentasi')->get();
+        $dokumentasis = DokumentasiKegiatan::with('file_dokumentasi')->latest()->get();
 
         // dd($formulirs);
         return view('dashboard.dokumentasi.dokumentasi-index', compact('dokumentasis'));
@@ -64,7 +64,12 @@ class DokumentasiKegiatanController extends Controller
         ]);
 
 
-        $judul = Str::slug($request->judul_dokumentasi);
+        $judul = Str::slug($request->judul_dokumentasi.'-'.time());
+        $path = 'file-dokumentasi/'.$judul;
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
         // dd($judul);
         $data = [];
         $data['judul_dokumentasi'] = $request->judul_dokumentasi;
@@ -86,7 +91,10 @@ class DokumentasiKegiatanController extends Controller
                 $filSaved = $field . '-' . $request->judul_dokumentasi . '-' . time() . '.' . $file->getClientOriginalExtension();
 
                 // dd($filSaved);
-                $path = $file->storeAs('file-dokumentasi/' . $judul, $filSaved,'public');
+                
+                $path = $file->move('file-dokumentasi/' . $judul.'/.', $filSaved);
+
+             
                 $data[$field] = $path;
             } else {
                 $data[$field] = null;
@@ -112,7 +120,7 @@ class DokumentasiKegiatanController extends Controller
                     $filename = $file->getClientOriginalName();
                     $filSaved = 'media-' . $index . '-' . $request->judul_dokumentasi . '-' . time() . '.' . $file->getClientOriginalExtension();
                     $fileext = $file->getClientOriginalExtension();
-                    $path = $file->storeAs('file-dokumentasi/' . $judul . '/media', $filSaved,'public');
+                    $path = $file->move('file-dokumentasi/' . $judul . '/media', $filSaved);
 
 
                     // dd($path);

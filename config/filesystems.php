@@ -71,7 +71,9 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('file-dokumentasi') => storage_path('app/public/file-dokumentasi'),
+        public_path('file-dokumentasi') => storage_path('app/public'),
+        public_path('file-pembinaan') => storage_path('app/public'),
+
     ],
 
 ];

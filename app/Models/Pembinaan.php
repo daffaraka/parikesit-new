@@ -39,4 +39,9 @@ class Pembinaan extends Model
     // {
     //     return $this->belongsTo(User::class, 'created_by');
     // }
+
+    public function file_pembinaan()
+    {
+        return $this->hasMany(FilePembinaan::class);
+    }
 }

@@ -83,7 +83,7 @@
             <div class="col-span-4 border border-gray-300 bg-white p-4 rounded-md shadow-sm">
                 <div class="text-md font-bold text-gray-800 mb-4">Dokumen Terkait</div>
 
-                <div class="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 gap-4">
                     <!-- Item 1: PDF Undangan -->
                     <div class="flex items-center justify-between p-4 border rounded-md bg-white shadow-sm">
                         <div class="flex items-center">
@@ -93,7 +93,7 @@
                                 {{-- <div class="text-xs text-gray-600 truncate">undangan_penilaian_mandiri.pdf</div> --}}
                             </div>
                         </div>
-                        <a href="{{ asset('storage/' . $dokumentasiKegiatan->bukti_dukung_undangan_dokumentasi) }}"
+                        <a href="{{ asset($dokumentasiKegiatan->bukti_dukung_undangan_dokumentasi) }}"
                             class="flex items-center text-gray-700 hover:text-black text-sm">
                             <i class="fas fa-download mr-1"></i> Download
                         </a>
@@ -108,7 +108,7 @@
                                 {{-- <div class="text-xs text-gray-600 truncate">daftar_hadir_april.pdf</div> --}}
                             </div>
                         </div>
-                        <a href="{{ asset('storage/' . $dokumentasiKegiatan->daftar_hadir_dokumentasi) }}"
+                        <a href="{{ asset( $dokumentasiKegiatan->daftar_hadir_dokumentasi) }}"
                             class="flex items-center text-gray-700 hover:text-black text-sm">
                             <i class="fas fa-download mr-1"></i> Download
                         </a>
@@ -123,7 +123,23 @@
                                 {{-- <div class="text-xs text-gray-600 truncate">notula_rapat_evaluasi.pdf</div> --}}
                             </div>
                         </div>
-                        <a href="{{ asset('storage/' . $dokumentasiKegiatan->notula_dokumentasi) }}"
+                        <a href="{{ asset( $dokumentasiKegiatan->notula_dokumentasi) }}"
+                            class="flex items-center text-gray-700 hover:text-black text-sm">
+                            <i class="fas fa-download mr-1"></i> Download
+                        </a>
+                    </div>
+
+
+                      <!-- Item 4: PDF Materi -->
+                    <div class="flex items-center justify-between p-4 bg-white rounded-md shadow-sm border border-gray-300">
+                        <div class="flex items-center">
+                            <i class="fas fa-file-alt text-gray-800 text-xl mr-3"></i>
+                            <div>
+                                <div class="font-semibold text-sm text-gray-800">PDF Materi</div>
+                                {{-- <div class="text-xs text-gray-600 truncate">notula_rapat_evaluasi.pdf</div> --}}
+                            </div>
+                        </div>
+                        <a href="{{ asset( $dokumentasiKegiatan->materi_dokumentasi) }}"
                             class="flex items-center text-gray-700 hover:text-black text-sm">
                             <i class="fas fa-download mr-1"></i> Download
                         </a>
@@ -158,51 +174,29 @@
 
 
 
-                <div id="controls-carousel" class="relative w-full" data-carousel="slide">
-                    <!-- Carousel wrapper -->
-                    <div class="relative h-100 overflow-hidden rounded-lg md:h-96">
-
+                <table class="min-w-full bg-white border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-600">No</th>
+                            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-600">Media</th>
+                            <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-600">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
                         @foreach ($dokumentasiKegiatan->file_dokumentasi as $index => $media)
-                            <div class="hidden duration-700 ease-in-out"
-                                data-carousel-item="{{ $index == 0 ? 'active' : '' }}">
-                                <img src="{{ asset('storage/' . $media->nama_file) }}"
-                                    class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                                    alt="...">
-                            </div>
+                            <tr>
+                                <td class="px-6 py-4 border-b border-gray-300">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 border-b border-gray-300">
+                                    <img src="{{ asset($media->nama_file) }}" class="h-16 w-16 object-cover" alt="Media">
+                                </td>
+                                <td class="px-6 py-4 border-b border-gray-300">
+                                    <a href="#" class="bg-blue-500 hover:bg-blue-600 dark:bg-dark-400 dark:hover:bg-dark-500 transition duration-300 ease-in-out text-white hover:text-blue-50 font-semibold px-2 py-3 rounded mr-2">Lihat</a>
+                                    <button type="button" data-id="{{ $media->id }}" class="deleteBtn bg-red-500 hover:bg-red-600 dark:bg-dark-400 dark:hover:bg-dark-500 transition duration-300 ease-in-out text-white hover:text-red-50 font-semibold px-2 py-3 rounded">Hapus</button>
+                                </td>
+                            </tr>
                         @endforeach
-
-
-                    </div>
-                    <!-- Slider indicators -->
-
-                    <!-- Slider controls -->
-                    <button type="button"
-                        class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                        data-carousel-prev>
-                        <span
-                            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 1 1 5l4 4" />
-                            </svg>
-                            <span class="sr-only">Previous</span>
-                        </span>
-                    </button>
-                    <button type="button"
-                        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                        data-carousel-next>
-                        <span
-                            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 9 4-4-4-4" />
-                            </svg>
-                            <span class="sr-only">Next</span>
-                        </span>
-                    </button>
-                </div>
+                    </tbody>
+                </table>
 
             </div>
 
@@ -228,16 +222,16 @@
 
             Swal.fire({
                 title: 'Apakah kamu yakin?',
-                text: "Anda tidak dapat mengembalikan formulir ini!",
+                text: "Anda tidak dapat mengembalikan dokumentasi ini!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus formulir ini!'
+                confirmButtonText: 'Ya, hapus media dokumentasi ini!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     e.preventDefault();
-                    $('#form_delete').submit();
+                    window.location.href = "{{ route('fileDok.destroy', ['fileDok' => ':id']) }}".replace(':id', id);
 
                 }
             })

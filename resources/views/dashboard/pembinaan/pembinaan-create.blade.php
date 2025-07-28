@@ -6,7 +6,7 @@
     <div class="card mt-6 p-8">
         <h4 class="h4 mb-4">Tambah Pembinaan</h4>
 
-        <form action="{{ route('dokumentasi.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('pembinaan.store') }}" method="POST" enctype="multipart/form-data">
 
             @csrf
 
@@ -14,7 +14,7 @@
                 <label class="font-semibold">Judul Pembinaan</label>
                 <input type="text"
                     class="p-2 rounded border border-gray-400 shadow focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 focus:bg-gray-200"
-                    name="judul _pembinaan" value="{{ old('judul _pembinaan') }}" required>
+                    name="judul_pembinaan" value="{{ old('judul _pembinaan') }}" required>
             </div>
             <div class="flex flex-col my-4">
                 <label class="font-semibold">Bukti Dukung Undangan Pembinaan</label>

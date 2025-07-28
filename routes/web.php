@@ -10,6 +10,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PembinaanController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PenjadwalanController;
+use App\Http\Controllers\FilePembinaanController;
+use App\Http\Controllers\FileDokumentasiController;
 use App\Http\Controllers\DokumentasiKegiatanController;
 use App\Http\Controllers\FormulirPenilaianDisposisiController;
 
@@ -72,15 +74,23 @@ Route::middleware('auth')->group(function () {
 
 
     Route::resource('pembinaan', PembinaanController::class);
+    Route::get('file-pembinaan/{filePemb}/edit', [FilePembinaanController::class, 'edit'])->name('filePemb.edit');
+    Route::put('file-pembinaan/{filePemb}', [FilePembinaanController::class, 'update'])->name('filePemb.update');
+    Route::get('file-pembinaan/{filePemb}', [FilePembinaanController::class, 'destroy'])->name('filePemb.destroy');
 
 
     Route::get('dokumentasi', [DokumentasiKegiatanController::class, 'index'])->name('dokumentasi.index');
     Route::get('dokumentasi/create', [DokumentasiKegiatanController::class, 'create'])->name('dokumentasi.create');
     Route::post('dokumentasi', [DokumentasiKegiatanController::class, 'store'])->name('dokumentasi.store');
-    Route::get('dokumentasi/{dokumentasiKegiatan}', [DokumentasiKegiatanController::class, 'show'])->name('dokumentasi.show');
     Route::get('dokumentasi/{dokumentasiKegiatan}/edit', [DokumentasiKegiatanController::class, 'edit'])->name('dokumentasi.edit');
     Route::put('dokumentasi/{dokumentasiKegiatan}', [DokumentasiKegiatanController::class, 'update'])->name('dokumentasi.update');
     Route::delete('dokumentasi/{dokumentasiKegiatan}', [DokumentasiKegiatanController::class, 'destroy'])->name('dokumentasi.destroy');
+    Route::get('dokumentasi/{dokumentasiKegiatan}', [DokumentasiKegiatanController::class, 'show'])->name('dokumentasi.show');
+
+    Route::get('file-dokumentasi/{fileDok}/edit', [FileDokumentasiController::class, 'edit'])->name('fileDok.edit');
+    Route::put('file-dokumentasi/{fileDok}', [FileDokumentasiController::class, 'update'])->name('fileDok.update');
+    Route::get('file-dokumentasi/{fileDok}', [FileDokumentasiController::class, 'destroy'])->name('fileDok.destroy');
+
 
     Route::get('penilaian-selesai', [FormulirPenilaianDisposisiController::class, 'tersedia'])->name('disposisi.penilaian.tersedia');
     Route::get('penilaian-selesai/{formulir}', [FormulirPenilaianDisposisiController::class, 'detail'])->name('disposisi.penilaian.tersedia.detail');

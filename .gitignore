@@ -5,7 +5,8 @@
 /public/storage
 /storage/*.key
 /public/bukti-dukung
-/public/foto-dokumentasi
+/public/file-dokumentasi
+/public/file-pembinaan
 /vendor
 .env
 .env.backup

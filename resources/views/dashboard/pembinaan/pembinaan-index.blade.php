@@ -23,7 +23,7 @@
                     {{-- <i class="fas fa-check-circle text-green-500 mr-2"></i> <span>Domain tersedia</span> --}}
                     {{-- @endif --}}
                     <div class="flex xl:flex md:flex-none justify-between mt-4">
-                        <h2 class="text-lg font-semibold mb-2">{{ $pb->judul_Pembinaan }}</h2>
+                        <h2 class="text-lg font-semibold mb-2">{{ $pb->judul_pembinaan }}</h2>
                     </div>
                     <div class="text-sm text-gray-500 flex items-center mb-2">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -39,9 +39,9 @@
                         <b>
 
                             @if ($countDok > 0)
-                                Pembinaan tersedia
+                                File Media Tersedia
                             @else
-                                Belum ada Pembinaan
+                                Belum ada File Media
                             @endif
                         </b>
 
