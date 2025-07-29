@@ -3,12 +3,12 @@
 @endphp
 
 <div class="md:fixed md:w-full md:top-0 md:z-20 flex flex-row flex-wrap items-center p-6 border-b border-gray-300
-    @if ($role === 'admin')
+    @if ($role === 'admin' || $role === 'opd' || $role === 'walidata')
         bg-blue-200
-    @elseif ($role === 'walidata')
+    {{-- @elseif ($role === 'walidata')
         bg-green-200
     @elseif ($role === 'opd')
-        bg-yellow-200
+        bg-yellow-200 --}}
     @else
         bg-white
     @endif
@@ -16,8 +16,8 @@
 
 <!-- logo -->
 <div class="flex-none w-56 flex flex-row items-center">
-    <img src="{{asset('img/logo.png')}}" class="w-10 flex-none">
-    <strong class="capitalize ml-1 flex-1">Parikesit</strong>
+    <img src="{{asset('img/logo2.png')}}" class="w-20 h-auto flex-none">
+    {{-- <strong class="capitalize ml-1 flex-1">Parikesit</strong> --}}
 
     <button id="sliderBtn" class="flex-none text-right text-gray-900 hidden md:block">
         <i class="fad fa-list-ul"></i>
