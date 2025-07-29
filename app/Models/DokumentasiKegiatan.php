@@ -13,6 +13,7 @@ class DokumentasiKegiatan extends Model
 
     protected $fillable = [
         'created_by_id',
+        'directory_dokumentasi',
         'judul_dokumentasi',
         'bukti_dukung_undangan_dokumentasi',
         'daftar_hadir_dokumentasi',

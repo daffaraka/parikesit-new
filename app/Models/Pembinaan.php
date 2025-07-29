@@ -12,6 +12,7 @@ class Pembinaan extends Model
 
     protected $fillable = [
         'created_by_id',
+        'directory_pembinaan',
         'judul_pembinaan',
         'bukti_dukung_undangan_pembinaan',
         'daftar_hadir_pembinaan',

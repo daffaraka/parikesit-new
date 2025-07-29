@@ -7,7 +7,7 @@
         <h4 class="h4 mb-4">Update Pembinaan</h4>
 
         <form action="{{ route('pembinaan.update', $pembinaan->id) }}" method="POST" enctype="multipart/form-data">
-
+            @method('PUT')
             @csrf
 
             <div class="flex flex-col my-4">

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('created_by_id');
 
+            $table->string('directory_dokumentasi');
             $table->string('judul_dokumentasi');
             $table->string('bukti_dukung_undangan_dokumentasi'); // Untuk PDF Undangan
             $table->string('daftar_hadir_dokumentasi'); // Untuk PDF Daftar Hadir

@@ -127,7 +127,7 @@
                                                 $formulir->id,
                                             );
                                             $penilaianUser = $indikator->penilaian
-                                                ->where('user_id', Auth::id())
+                                                ->where('user_id', $opd->id)
                                                 ->where('formulir_id', $domainDibuka->id)
                                                 ->first();
                                         @endphp
