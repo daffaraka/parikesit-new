@@ -54,16 +54,16 @@ class DashboardController extends Controller
             $penilaian->user_id = $request->user_id;
             $penilaian->save();
 
-            if ($penilaian) {
-                FormulirPenilaianDisposisi::create([
-                    'formulir_id' => $request->formulir_id,
-                    'indikator_id' => $indikator->id,
-                    'assigned_profile_id' => $request->user_id,
-                    'status' => 'sent',
-                    'is_completed' => false,
+            // if ($penilaian) {
+            //     FormulirPenilaianDisposisi::create([
+            //         'formulir_id' => $request->formulir_id,
+            //         'indikator_id' => $indikator->id,
+            //         'assigned_profile_id' => $request->user_id,
+            //         'status' => 'sent',
+            //         'is_completed' => false,
 
-                ]);
-            }
+            //     ]);
+            // }
         }
 
         return redirect()->back();
