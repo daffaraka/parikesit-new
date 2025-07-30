@@ -73,21 +73,27 @@ class FormulirPenilaianDisposisiController extends Controller
         $domain = Domain::where('nama_domain', $domain)->first();
         $aspek = $domain->aspek()->where('nama_aspek', $aspek)->first();
         $indikator = $aspek->indikator()->where('nama_indikator', $indikator)->first();
-        // $dinilai = Indikator::with('penilaian')->whereHas('penilaian', function ($query) use ($indikator, $formulir) {
-        //     $query->where('user_id', Auth::user()->id)->where('nilai', '!=', null)->where('indikator_id', $indikator->id)->whereFormulirId($formulir->id);
-        // });
 
-        // dd($opd);
+
         $nilai_diinput = Penilaian::where('user_id', $opd->id)->where('formulir_id', $formulir->id)->where('indikator_id', $indikator->id)->first();
         $nilai_dikoreksi = Penilaian::where('user_id', $opd->id)->where('formulir_id', $formulir->id)
+            ->where('indikator_id', $indikator->id)->where('nilai_diupdate', '!=', null)->first();
+        $nilai_dievaluasi = Penilaian::where('user_id', $opd->id)->where('formulir_id', $formulir->id)
             ->where('indikator_id', $indikator->id)->where('nilai_koreksi', '!=', null)->first();
-        // dd($nilai_dikoreksi);
 
 
-        // dd($nilai_diinput); 
-        return view('dashboard.disposisi.koreksi-penilaian', compact('opd', 'formulir', 'domain', 'aspek', 'indikator', 'nilai_diinput','nilai_dikoreksi'));
-   
-       
+        // dd($nilai_dievaluasi);
+        // dd($nilai_diinput);
+        return view('dashboard.disposisi.koreksi-penilaian', compact(
+            'opd',
+            'formulir',
+            'domain',
+            'aspek',
+            'indikator',
+            'nilai_diinput',
+            'nilai_dikoreksi',
+            'nilai_dievaluasi'
+        ));
     }
 
     /**
@@ -101,7 +107,7 @@ class FormulirPenilaianDisposisiController extends Controller
 
         // dd($penilaian);
         $penilaian->update([
-            'nilai_koreksi' => $request->nilai,
+            'nilai_diupdate' => $request->nilai,
             'pengoreksi' => $pengoreksi
         ]);
 
@@ -111,7 +117,7 @@ class FormulirPenilaianDisposisiController extends Controller
 
 
 
-    public function updatePenilaian(Request $request)
+    public function updateEvaluasi(Request $request)
     {
 
         // dd($request->all());
@@ -121,17 +127,17 @@ class FormulirPenilaianDisposisiController extends Controller
 
         // dd($penilaian);
         $penilaian->update([
-            // 'nilai_koreksi' => $request->nilai,
-            'diupdate_by' => $pengoreksi,
+            'nilai_koreksi' => $request->nilai_evaluasi,
+            'dikoreksi_by' => $pengoreksi,
             'evaluasi' => $request->evaluasi,
-            'tanggal_diperbarui' => now()
+            'tanggal_dikoreksi' => now()
         ]);
 
 
         return redirect()->back()->with('success', 'Berhasil mengoreksi penilaian');
     }
 
- 
+
     public function show(FormulirPenilaianDisposisi $formulirPenilaianDisposisi)
     {
         //

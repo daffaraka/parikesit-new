@@ -41,7 +41,7 @@
                         $progressPercentage = ($completedParticipants / $totalParticipants) * 100;
                     @endphp
 
-                    <div class="mt-6 grid grid-cols-3 md:grid-cols-3 gap-4">
+                    {{-- <div class="mt-6 grid grid-cols-3 md:grid-cols-3 gap-4">
                         <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                             <div class="flex items-center justify-between">
                                 <div>
@@ -84,7 +84,7 @@
                             <div class="bg-blue-600 h-2 rounded-full transition-all duration-300"
                                 style="width: {{ $progressPercentage }}%"></div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- Content -->

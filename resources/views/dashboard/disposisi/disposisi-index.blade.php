@@ -47,7 +47,7 @@
                     </div>
 
                     <!-- Stats -->
-                    <div class="grid grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                    {{-- <div class="grid grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                         <!-- Respon -->
                         <div class="flex items-center space-x-2">
                             <div class="bg-blue-100 p-3 rounded-full">
@@ -110,7 +110,7 @@
                         <div class="w-full bg-gray-200 rounded-full h-2.5">
                             <div class="bg-red-500 h-3 rounded-full" style="width: 57.7%"></div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             @endforeach
 
