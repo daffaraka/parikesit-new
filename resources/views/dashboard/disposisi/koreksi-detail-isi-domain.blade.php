@@ -91,100 +91,107 @@
                         </div>
                         <div class="flex bg-blue-100 rounded-md p-4 mt-4 shadow">
 
-                            <table class="min-w-full table-fixed">
-                                <thead class="bg-gray-100">
-                                    <tr>
-                                        <th
-                                            class="w-1/2 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider ">
-                                            Indikator</th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
-                                            Bobot</th>
-
-                                        <th
-                                            class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
-                                            Nilai Diisi</th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
-                                            Nilai Koreksi</th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
-                                            Nama Pengoreksi</th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
-                                            Status</th>
-                                        <th
-                                            class="w-1/3 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
-                                            Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white">
-                                    @foreach ($aspek->indikator as $indikator)
-                                        @php
-
-                                            $domainDibuka = $indikator->aspek->domain->formulirs->firstWhere(
-                                                'id',
-                                                $formulir->id,
-                                            );
-                                            $penilaianUser = $indikator->penilaian
-                                                ->where('user_id', $opd->id)
-                                                ->where('formulir_id', $domainDibuka->id)
-                                                ->first();
-                                        @endphp
-                                        <tr class="{{$penilaianUser->nilai_koreksi != 0 ? 'bg-green-300' : ''}}">
-                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200  truncate max-w-20"
-                                                title="{{ $indikator->nama_indikator }}">
-                                                <a href="{{ route('formulir.penilaianAspek', [$formulir, $domain->nama_domain, $aspek->nama_aspek, $indikator->nama_indikator]) }}"
-                                                    class="text-gray-800 font-semibold text-md w-40 line-clamp-1 break-all">
-                                                    {{ Str::of($indikator->nama_indikator)->limit(40) }}
-                                                </a>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <p class="text-gray-800 font-bold">{{ $indikator->bobot_indikator }}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
 
 
-                                                @if ($penilaianUser && $domainDibuka->id == $formulir->id)
-                                                    <span class="text-black rounded text-md font-bold">
-                                                        {{ $penilaianUser->nilai }}
-                                                    </span>
-                                                @else
-                                                    <span class="text-red-500">- </span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <span class="text-black rounded text-md font-bold">
-                                                    {{ $penilaianUser->nilai_koreksi ?? '-' }}
-                                                </span>
-                                            </td>
-                                            <td>
 
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                @if ($penilaianUser)
-                                                    <span
-                                                        class="bg-blue-500 p-3 text-white rounded text-xs font-semibold">Sudah
-                                                        Diisi</span>
-                                                @else
-                                                    <span
-                                                        class="bg-red-500 p-3 text-white rounded text-xs font-semibold">Belum
-                                                        diisi</span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <a href="{{ route('disposisi.koreksi.indikator.beri-koreksi', [$opd->name, $formulir->nama_formulir, $domain->nama_domain, $aspek->nama_aspek, $indikator->nama_indikator]) }}"
-                                                    class="text-blue-500 hover:text-blue-700 font-normal text-sm">
-                                                    <i
-                                                        class="fad fa-external-link-alt text-md mr-1 bg-indigo-500 text-white p-4 rounded ml-2"></i>
+                            <div class="table-auto">
 
-                                                </a>
-                                            </td>
+                                <table class="min-w-full">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th
+                                                class="w-1/2 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider break-all">
+                                                Indikator</th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
+                                                Bobot</th>
+
+                                            <th
+                                                class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
+                                                Nilai Diisi</th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
+                                                Nilai Koreksi</th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
+                                                Nama Pengoreksi</th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
+                                                Status</th>
+                                            <th
+                                                class="w-1/3 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
+                                                Action</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody class="bg-white">
+                                        @foreach ($aspek->indikator as $indikator)
+                                            @php
+
+                                                $domainDibuka = $indikator->aspek->domain->formulirs->firstWhere(
+                                                    'id',
+                                                    $formulir->id,
+                                                );
+                                                $penilaianUser = $indikator->penilaian
+                                                    ->where('user_id', $opd->id)
+                                                    ->where('formulir_id', $domainDibuka->id)
+                                                    ->first();
+                                            @endphp
+                                            <tr class="{{ $penilaianUser->nilai_koreksi != 0 ? 'bg-green-300' : '' }}">
+                                                <td class="px-6 py-4 border-b border-gray-200 break-all truncate max-w-20"
+                                                    title="{{ $indikator->nama_indikator }}">
+                                                    <p
+                                                        class="text-gray-800 font-semibold text-md ">
+                                                        {{ Str::of($indikator->nama_indikator)->limit(100) }}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                    <p class="text-gray-800 font-bold">{{ $indikator->bobot_indikator }}
+                                                    </p>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+
+
+                                                    @if ($penilaianUser && $domainDibuka->id == $formulir->id)
+                                                        <span class="text-black rounded text-md font-bold">
+                                                            {{ $penilaianUser->nilai }}
+                                                        </span>
+                                                    @else
+                                                        <span class="text-red-500">- </span>
+                                                    @endif
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                    <span class="text-black rounded text-md font-bold">
+                                                        {{ $penilaianUser->nilai_koreksi ?? '-' }}
+                                                    </span>
+                                                </td>
+                                                <td>
+
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                    @if ($penilaianUser)
+                                                        <span
+                                                            class="bg-blue-500 p-3 text-white rounded text-xs font-semibold">Sudah
+                                                            Diisi</span>
+                                                    @else
+                                                        <span
+                                                            class="bg-red-500 p-3 text-white rounded text-xs font-semibold">Belum
+                                                            diisi</span>
+                                                    @endif
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                    <a href="{{ route('disposisi.koreksi.indikator.beri-koreksi', [$opd->name, $formulir->nama_formulir, $domain->nama_domain, $aspek->nama_aspek, $indikator->nama_indikator]) }}"
+                                                        class="text-blue-500 hover:text-blue-700 font-normal text-sm">
+                                                        <i
+                                                            class="fad fa-external-link-alt text-md mr-1 bg-indigo-500 text-white p-4 rounded ml-2"></i>
+
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
 
                     </div>

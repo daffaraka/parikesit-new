@@ -158,7 +158,7 @@
             <div class="space-y-2 mt-5 font-semibold">
 
                 @php
-                    $nilaiTerkunci = $dinilai ? $dinilai->penilaian->first()->nilai : null;
+                    $nilaiTerkunci = $dinilai->nilai ??  null;
                     $style =
                         $nilaiTerkunci == null
                             ? 'block bg-white border rounded-md p-3 shadow-sm cursor-pointer hover:bg-blue-200 ease-in-out transition duration-100'
@@ -167,6 +167,8 @@
 
                 {{-- {{$nilaiTerkunci ?? 'gk'}} --}}
                 <div class="font-semibold text-sm text-gray-700">{{ $indikator->nama_indikator }}</div>
+
+                <div class="text-xl">{{$nilaiTerkunci }}</div>
                 <div class="space-y-2 text-sm">
                     <label for="level1" class="{{ $style }}">
                         <div class="flex items-start space-x-3">
@@ -219,7 +221,7 @@
                 <label class="text-sm font-semibold text-gray-700 mb-1 block">Catatan Penjelasan</label>
 
                 @if ($dinilai)
-                    <textarea rows="4" class="w-full border rounded p-2 text-sm" name="catatan" disabled>{{ $dinilai->penilaian->first()->catatan }} </textarea>
+                    <textarea rows="4" class="w-full border rounded p-2 text-sm" name="catatan" disabled>{{ $dinilai->catatan }} </textarea>
                 @else
                     <textarea rows="4" class="w-full border rounded p-2 text-sm" name="catatan"
                         placeholder="Penjelasan indikator..."></textarea>
@@ -231,14 +233,14 @@
                 <label class="text-sm font-semibold text-gray-700 mb-1 block">Bukti Dukung</label>
                 <div class="text-xs text-gray-500 mb-2">Unggah bukti dalam format .pdf maksimal 3 MB</div>
                 @if ($dinilai)
-                    @if (substr($dinilai->penilaian->first()->bukti_dukung, -3) == 'pdf')
-                        <a href="{{ asset($dinilai->penilaian->first()->bukti_dukung) }}"
+                    @if (substr($dinilai->bukti_dukung, -3) == 'pdf')
+                        <a href="{{ asset($dinilai->bukti_dukung) }}"
                             class="block w-full text-gray-700 rounded p-5 shadow border-2 text-sm mb-4" target="_blank">
                             Lihat PDF
                         </a>
                     @else
-                        <a href="{{ asset($dinilai->penilaian->first()->bukti_dukung) }}" target="_blank">
-                            <img src="{{ asset($dinilai->penilaian->first()->bukti_dukung) }}"
+                        <a href="{{ asset($dinilai->bukti_dukung) }}" target="_blank">
+                            <img src="{{ asset($dinilai->bukti_dukung) }}"
                                 class="block w-40 text-gray-700 rounded p-2 shadow border-2 text-sm mb-4"
                                 alt="Bukti Dukung">
                         </a>

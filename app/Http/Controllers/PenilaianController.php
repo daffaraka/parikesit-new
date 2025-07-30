@@ -202,13 +202,19 @@ class PenilaianController extends Controller
 
 
 
-
-        $dinilai = Indikator::with('penilaian')->whereHas('penilaian', function ($query) use ($indikator, $formulir) {
-            $query->where('user_id', Auth::user()->id)->where('nilai', '!=', null)->where('indikator_id', $indikator->id)->whereFormulirId($formulir->id);
-        })
-            ->where('nama_indikator', $req_indikator)->first();
+        // dd($req_indikator);
 
 
+
+        // $dinilai = Indikator::with('penilaian')->whereHas('penilaian', function ($query) use ($indikator, $formulir) {
+        //     $query->where('user_id', Auth::user()->id)->where('nilai', '!=', null)->where('indikator_id', $indikator->id)->whereFormulirId($formulir->id);
+        // })
+        //     ->where('nama_indikator', $req_indikator)->get();
+
+
+        $dinilai = Penilaian::with('indikator')->whereHas('indikator', function ($query) use ($req_indikator) {
+            $query->where('nama_indikator', $req_indikator)->where('user_id', Auth::user()->id);
+        })->first();
         // dd($dinilai);
         // dd($indikator->id);
         $next_indikator = Indikator::with('penilaian')->where('id', '>', $indikator->id)->first();

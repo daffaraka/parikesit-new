@@ -13,16 +13,23 @@ class Penilaian extends Model
 
     protected $fillable = [
         'indikator_id',
+        'formulir_id',
+
         'nilai',
         'catatan',
         'tanggal_penilaian',
         'user_id',
-        'formulir_id',
         'bukti_dukung',
         'dikerjakan_by',
-        'dikoreksi_by',
-        'koreksi',
+
+
+        'nilai_diupdate',
+        'diupdate_by',
+        'tanggal_diperbarui',
+
         'nilai_koreksi',
+        'dikoreksi_by',
+        'evaluasi',
         'tanggal_dikoreksi',
     ];
 
@@ -45,6 +52,13 @@ class Penilaian extends Model
     {
         return $this->belongsTo(User::class, 'dikerjakan_by');
     }
+
+
+    public function diupdate_by()
+    {
+        return $this->belongsTo(User::class, 'diupdate_by');
+    }
+
 
     public function dikoreksi_by()
     {

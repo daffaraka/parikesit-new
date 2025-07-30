@@ -104,9 +104,26 @@ class FormulirPenilaianDisposisiController extends Controller
         return redirect()->back()->with('success', 'Berhasil mengoreksi penilaian');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+
+    public function updatePenilaian(Request $request)
+    {
+        $penilaian = Penilaian::find($request->penilaian_id);
+        $pengoreksi = Auth::user()->id;
+
+
+        // dd($penilaian);
+        $penilaian->update([
+            'nilai_diupdate' => $request->nilai,
+            'diupdate_by' => $pengoreksi,
+            'tanggal_diperbarui' => now()
+        ]);
+
+
+        return redirect()->back()->with('success', 'Berhasil mengoreksi penilaian');
+    }
+
+ 
     public function show(FormulirPenilaianDisposisi $formulirPenilaianDisposisi)
     {
         //
