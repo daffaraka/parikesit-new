@@ -168,7 +168,7 @@
                 {{-- {{$nilaiTerkunci ?? 'gk'}} --}}
                 <div class="font-semibold text-sm text-gray-700">{{ $indikator->nama_indikator }}</div>
 
-                <div class="text-xl">{{$nilaiTerkunci }}</div>
+                {{-- <div class="text-xl">{{$nilaiTerkunci }}</div> --}}
                 <div class="space-y-2 text-sm">
                     <label for="level1" class="{{ $style }}">
                         <div class="flex items-start space-x-3">
