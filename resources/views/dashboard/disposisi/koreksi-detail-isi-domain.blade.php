@@ -94,31 +94,31 @@
 
 
 
-                            <div class="table-auto">
+                            <div class="relative overflow-x-auto w-full">
 
-                                <table class="min-w-full">
-                                    <thead class="bg-gray-100">
+                                <table class="w-full">
+                                    <thead class="bg-gray-100 w-100">
                                         <tr>
-                                            <th
+                                            <th scope="col"
                                                 class="w-1/2 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider break-all">
                                                 Indikator</th>
-                                            <th
+                                            <th scope="col"
                                                 class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
                                                 Bobot</th>
 
-                                            <th
+                                            <th scope="col"
                                                 class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
                                                 Nilai Diisi</th>
-                                            <th
+                                            <th scope="col"
                                                 class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
                                                 Nilai Koreksi</th>
-                                            <th
+                                            <th scope="col"
                                                 class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
                                                 Nama Pengoreksi</th>
-                                            <th
+                                            <th scope="col"
                                                 class="w-1/5 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
                                                 Status</th>
-                                            <th
+                                            <th scope="col"
                                                 class="w-1/3 px-6 py-3 text-left text-xs leading-4 font-bold text-gray-700 uppercase tracking-wider">
                                                 Action</th>
                                         </tr>
@@ -136,12 +136,13 @@
                                                     ->where('formulir_id', $domainDibuka->id)
                                                     ->first();
                                             @endphp
-                                            <tr class="{{ $penilaianUser->nilai_koreksi != 0 ? 'bg-green-300' : '' }}">
+
+
+                                            <tr class="{{ $penilaianUser != null ? 'bg-green-300' : '' }}">
                                                 <td class="px-6 py-4 border-b border-gray-200 break-all truncate max-w-20"
                                                     title="{{ $indikator->nama_indikator }}">
-                                                    <p
-                                                        class="text-gray-800 font-semibold text-md ">
-                                                        {{ Str::of($indikator->nama_indikator)->limit(100) }}
+                                                    <p class="text-gray-800 font-semibold text-md ">
+                                                        {{ Str::of($indikator->nama_indikator)->limit(50) }}
                                                     </p>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
