@@ -1,5 +1,5 @@
 @extends('dashboard.layout')
-@section('title', 'Tambah Dokumentasi')
+@section('title', 'Update Dokumentasi')
 {{-- <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" /> --}}
 
 @section('content')
@@ -7,7 +7,7 @@
         <h4 class="h4 mb-4">Update Dokumentasi</h4>
 
         <form action="{{ route('dokumentasi.update',$dokumentasiKegiatan->id) }}" method="POST" enctype="multipart/form-data">
-
+@method('put')
             @csrf
 
             <div class="flex flex-col my-4">
@@ -48,39 +48,7 @@
                 <p class="text-xs font-semibold text-red-600 mt-2">*File notula harus pdf</p>
             </div>
 
-            <div class="grid grid-cols-1 my-4">
-                <div class="col-span-1">
-                    <div id="inputFormRow">
-                        <div class="input-group mb-3">
-                            <label class="block mb-2 font-semibold text-gray-900 dark:text-white" for="file_input">File Media</label>
-                            <div class="flex">
-                                <input
-                                    class="block p-2 w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                    id="file_input" type="file" name="files[]" accept="image/*,video/*">
-                                <div class="input-group-append">
-                                    <button id="removeRow" type="button" class="btn btn-danger">Kurangi</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @foreach ($dokumentasiKegiatan->file_dokumentasi as $index => $media)
-                        <div class="input-group mb-3">
-                            <label class="block mb-2 font-semibold text-gray-900 dark:text-white" for="file_input">File Media</label>
-                            <img src="{{ asset('storage/'.$media->nama_file) }}" class="w-40 border-2 shadow-sm mb-3" id="media" alt="">
-                            <div class="flex">
-                                <input
-                                    class="block p-2 w-full text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                    id="file_input" type="file" name="files[]" accept="image/*,video/*" value="{{ $media->file }}">
-                                <div class="input-group-append">
-                                    <button id="removeRow" type="button" class="btn btn-danger">Kurangi</button>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                    <div id="newRow"></div>
-                    <button id="addRow" type="button" class="btn btn-sm text-black bg-green-300 border-2 mb-4">Tambah Input Media File</button>
-                </div>
-            </div>
+
 
 
             <div class="flex justify-end">

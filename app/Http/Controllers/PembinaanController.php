@@ -177,32 +177,28 @@ class PembinaanController extends Controller
 
         $pembinaan->load('file_pembinaan');
 
-        // dd($request->all());
-        // $request->validate([
-        //     'judul_pembinaan' => 'required',
-        //     'bukti_dukung_undangan' => 'mimes:pdf|max:5120',
-        //     'daftar_hadir' => 'mimes:pdf|max:5120',
-        //     'materi' => 'mimes:pdf|max:5120',
-        //     'notula' => 'mimes:pdf|max:5120',
-        //   
-        // ], [
-        //     'judul_pembinaan.required' => 'Nama pembinaan harus diisi',
-        //     'bukti_dukung_undangan.required' => 'Bukti Dukung harus diisi',
-        //     'bukti_dukung_undangan.mimes' => 'Bukti Dukung harus PDF',
-        //     'bukti_dukung_undangan.max' => 'Bukti Dukung maximal 5mb',
-        //     'daftar_hadir.required' => 'Daftar Hadir harus diisi',
-        //     'daftar_hadir.mimes' => 'Daftar Hadir harus PDF',
-        //     'daftar_hadir.max' => 'Daftar Hadir maximal 5mb',
-        //     'materi.required' => 'Materi harus diisi',
-        //     'materi.mimes' => 'Materi harus PDF',
-        //     'materi.max' => 'Materi maximal 5mb',
-        //     'notula.required' => 'Notula harus diisi',
-        //     'notula.mimes' => 'Notula harus PDF',
-        //     'notula.max' => 'Notula maximal 5mb',
-        //     'files.*.required' => 'File harus diisi',
-        //     'files.*.mimes' => 'File harus berupa gambar atau video',
-        //     'files.*.max' => 'File maximal 5mb',
-        // ]);
+        $request->validate([
+            'judul_pembinaan' => 'required',
+            'bukti_dukung_undangan' => 'mimes:pdf|max:5120',
+            'daftar_hadir' => 'mimes:pdf|max:5120',
+            'materi' => 'mimes:pdf|max:5120',
+            'notula' => 'mimes:pdf|max:5120',
+
+        ], [
+            'judul_pembinaan.required' => 'Nama pembinaan harus diisi',
+            'bukti_dukung_undangan.required' => 'Bukti Dukung harus diisi',
+            'bukti_dukung_undangan.mimes' => 'Bukti Dukung harus PDF',
+            'bukti_dukung_undangan.max' => 'Bukti Dukung maximal 5mb',
+            'daftar_hadir.required' => 'Daftar Hadir harus diisi',
+            'daftar_hadir.mimes' => 'Daftar Hadir harus PDF',
+            'daftar_hadir.max' => 'Daftar Hadir maximal 5mb',
+            'materi.required' => 'Materi harus diisi',
+            'materi.mimes' => 'Materi harus PDF',
+            'materi.max' => 'Materi maximal 5mb',
+            'notula.required' => 'Notula harus diisi',
+            'notula.mimes' => 'Notula harus PDF',
+            'notula.max' => 'Notula maximal 5mb',
+        ]);
 
         $time = time();
         $judul = Str::slug($request->judul_pembinaan . '-' . $time);
@@ -231,8 +227,6 @@ class PembinaanController extends Controller
             ],
         ];
 
-
-
         foreach ($dataFiles as $indexName => $field) {
 
             $file = $field['request_file'];
@@ -252,30 +246,11 @@ class PembinaanController extends Controller
                     $path = $file->move('file-pembinaan/' . $judul . '/', $fileSaved);
                     $data[$indexName] = $path;
                 }
-            } 
+            }
             //  else {
             //     $data[$indexName] = $localFile;
             // }
         }
-
-
-
-
-        // foreach ($pembinaan->file_pembinaan as $index => $fp) {
-
-        //     if (File::exists($fp->file)) {
-        //         rename($fp->file, 'file-pembinaan/' . $pembinaan->directory_pembinaan . '/media' . 'media-' . $index . '-' . $judul);
-
-        //         $fp->update([
-        //             'nama_file' => $pembinaan->directory_pembinaan . '/media' . 'media-' . $index . '-' . $judul
-        //         ]);
-        //     }
-        // }
-
-        // rename('file-pembinaan/' . $pembinaan->directory_pembinaan, 'file-pembinaan/' . $judul);
-
-
-        // // if ($renameFolder)
 
         $pembinaan->update([
             'created_by_id' => Auth::user()->id,
