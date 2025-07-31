@@ -69,8 +69,8 @@
                             id="form_delete">
                             @csrf
                             @method('DELETE')
-                            <button type="button"
-                                class="deleteBtn w-full text-center block bg-red-700 text-white px-4 py-2 rounded hover:bg-red-900 hover:text-white">Hapus</button>
+                            <button type="button" id="delete_parent"
+                                class=" w-full text-center block bg-red-700 text-white px-4 py-2 rounded hover:bg-red-900 hover:text-white" data-id="{{$pembinaan->id}}">Hapus</button>
                         </form>
                     </div>
                 </div>
@@ -221,5 +221,28 @@
                 }
             })
         });
+
+
+        $('#delete_parent').click(function(e) {
+
+            var id = $(this).data('id');
+
+            Swal.fire({
+                title: 'Apakah kamu yakin?',
+                text: "Anda tidak dapat mengembalikan data pembinaan ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus data pembinaan ini!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    e.preventDefault();
+                    $('#form_delete').submit();
+
+                }
+            })
+        });
+        
     </script>
 @endpush

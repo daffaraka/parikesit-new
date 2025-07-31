@@ -285,6 +285,15 @@ class PembinaanController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     */
-    public function destroy(Pembinaan $pembinaan) {}
+     */                         
+    public function destroy(Pembinaan $pembinaan) {
+
+        // dd($pembinaan);
+        $pembinaan->delete();
+
+
+
+        return redirect()->route('pembinaan.index')->with('success','Pembinaan Berhasil dihapus');
+
+    }
 }
