@@ -19,10 +19,10 @@ class FormulirPenilaianDisposisiController extends Controller
     public function tersedia()
     {
 
-        $penilaianSelesai = Formulir::whereHas('formulir_penilaian_diposisi')->get();
+        $penilaianSelesai = Formulir::whereHas('penilaians')->get();
         $countMaxPeserta = User::whereRole('opd')->count();
         $progresPenialian = '';
-        // dd($disposisis);
+        // dd($penilaianSelesai);
 
         return view('dashboard.disposisi.disposisi-index', compact('penilaianSelesai', 'countMaxPeserta'));
     }

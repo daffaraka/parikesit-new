@@ -106,7 +106,7 @@
                 <hr> --}}
 
                 <!-- item -->
-                <form method="POST" action="{{ route('logout') }}" class="inline">
+                <form method="POST" action="{{ route('logout') }}" class="inline-block w-full">
                     @csrf
                     <button type="submit" class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out text-black w-100">
                         <i class="fad fa-user-times text-xs mr-1"></i>
