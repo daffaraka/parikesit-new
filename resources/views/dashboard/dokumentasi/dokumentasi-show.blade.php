@@ -190,7 +190,7 @@
                                     <img src="{{ asset($media->nama_file) }}" class="h-16 w-16 object-cover" alt="Media">
                                 </td>
                                 <td class="px-6 py-4 border-b border-gray-300">
-                                    <a href="#" class="bg-blue-500 hover:bg-blue-600 dark:bg-dark-400 dark:hover:bg-dark-500 transition duration-300 ease-in-out text-white hover:text-blue-50 font-semibold px-2 py-3 rounded mr-2">Lihat</a>
+                                    <a href="{{asset($media->nama_file)}}" target="_blank" class="bg-blue-500 hover:bg-blue-600 dark:bg-dark-400 dark:hover:bg-dark-500 transition duration-300 ease-in-out text-white hover:text-blue-50 font-semibold px-2 py-3 rounded mr-2">Lihat</a>
                                     <button type="button" data-id="{{ $media->id }}" class="deleteBtn bg-red-500 hover:bg-red-600 dark:bg-dark-400 dark:hover:bg-dark-500 transition duration-300 ease-in-out text-white hover:text-red-50 font-semibold px-2 py-3 rounded">Hapus</button>
                                 </td>
                             </tr>
