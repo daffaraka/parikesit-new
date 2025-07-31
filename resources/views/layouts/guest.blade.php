@@ -17,7 +17,7 @@
     <body class="font-sans text-gray-900 antialiased bg-gray-100">
         <div class="min-h-screen flex flex-col justify-center items-center">
             <div class="mb-6">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-24 h-24 object-contain">
+                <img src="{{ asset('img/logo1.png') }}" alt="Logo" class="w-24 h-24 object-contain">
             </div>
             <div class="w-full sm:max-w-md px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}

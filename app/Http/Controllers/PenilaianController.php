@@ -261,16 +261,16 @@ class PenilaianController extends Controller
             'bukti_dukung' => 'bukti-dukung/' . $savedFileName ?? '-'
         ]);
 
-        if ($penilaian) {
-            FormulirPenilaianDisposisi::create([
-                'formulir_id' => $formulir->id,
-                'indikator_id' => $indikator,
-                'assigned_profile_id' => Auth::user()->id,
-                'status' => 'sent',
-                'is_completed' => false,
+        // if ($penilaian) {
+        //     FormulirPenilaianDisposisi::create([
+        //         'formulir_id' => $formulir->id,
+        //         'indikator_id' => $indikator,
+        //         'assigned_profile_id' => Auth::user()->id,
+        //         'status' => 'sent',
+        //         'is_completed' => false,
 
-            ]);
-        }
+        //     ]);
+        // }
 
         return redirect()->back()->with('success', 'Penilaian berhasil disimpan');
     }

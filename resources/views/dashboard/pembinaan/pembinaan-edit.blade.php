@@ -106,6 +106,8 @@
 
 
             <div class="flex justify-end">
+                <a href="{{ route('pembinaan.show', $pembinaan->id) }}"
+                    class="mt-5 p-2 px-8 mr-4 bg-gray-300 text-gray-800 hover:bg-gray-400 ease-in-out transition duration-100 border rounded-md">Batal</a>
                 <button type="submit"
                     class="mt-5 p-2 px-8 bg-blue-500 text-white hover:bg-blue-900 hover:text-white ease-in-out transition duration-100 border rounded-md">Perbarui</button>
             </div>

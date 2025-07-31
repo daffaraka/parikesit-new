@@ -2,7 +2,7 @@
 @section('title','Tambah User')
 @section('content')
     <div class="card mt-6 p-8">
-        <h4 class="h4 mb-4">Tambah Formulir</h4>
+        <h4 class="h4 mb-4">Tambah User</h4>
 
 
         <form action="{{ route('user.store') }}" method="POST" id="form_create">

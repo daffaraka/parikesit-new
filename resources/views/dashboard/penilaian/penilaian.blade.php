@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="text-sm text-blue-600 underline mt-2">
-                        {{ $formulir->created_at->format('Y') }} | {{ $formulir->instansi ?? 'Dinas Lorem Ipsum' }}</div>
+                        {{ $formulir->created_at->format('Y') }} | {{ $formulir->instansi ?? auth()->user()->name }}</div>
                 </div>
             </div>
 

@@ -42,7 +42,7 @@
                             </div>
                             <div class="text-sm text-blue-600  mt-2">
                                 {{ $pembinaan->created_at->format('d F Y') }} |
-                                {{ $pembinaan->instansi ?? 'Dinas Lorem Ipsum' }}</div>
+                                {{ $pembinaan->instansi ?? $pembinaan->profile->name }}</div>
 
                         </div>
 
@@ -188,7 +188,7 @@
         </div>
 
         <div class="mt-4">
-            <a href="{{ url()->previous() }}"
+            <a href="{{ route('pembinaan.index') }}"
                 class="bg-indigo-800 text-white px-4 py-4 rounded hover:bg-gray-500 hover:text-black">Kembali</a>
         </div>
 

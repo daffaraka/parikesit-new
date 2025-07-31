@@ -79,7 +79,7 @@
                 </a>
                 <!-- end item -->
 
-                <!-- item -->
+                {{-- <!-- item -->
                 <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out text-black"
                     href="#">
                     <i class="fad fa-inbox-in text-xs mr-1"></i>
@@ -103,7 +103,7 @@
                 </a>
                 <!-- end item -->
 
-                <hr>
+                <hr> --}}
 
                 <!-- item -->
                 <form method="POST" action="{{ route('logout') }}" class="inline">
