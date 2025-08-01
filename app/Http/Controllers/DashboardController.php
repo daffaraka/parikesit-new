@@ -16,10 +16,10 @@ class DashboardController extends Controller
     public function index()
     {
 
-        if (Auth::user()->role == 'opd') {
-            $data['title'] = 'Dashboard OPD';
-            return view('dashboard.opd.opd-dashboard', $data);
-        } else {
+        // if (Auth::user()->role == 'opd') {
+        //     $data['title'] = 'Dashboard OPD';
+        //     return view('dashboard.opd.opd-dashboard', $data);
+        // } else {
             $data['title'] = 'Dashboard';
             $data['kegiatanPenilaian'] = Formulir::latest()->get();
             $data['jumlahKegiatanPenilaian'] = Formulir::count();
@@ -28,9 +28,9 @@ class DashboardController extends Controller
             $data['userTerdaftar'] = User::count();
             $data['users'] = User::doesntHave('penilaians')->latest()->get();
 
-            // dd($data['users']);
+        //     // dd($data['users']);
             return view('dashboard.dashboard', $data);
-        }
+        // }
     }
 
 

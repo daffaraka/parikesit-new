@@ -3,20 +3,53 @@
 @section('content')
     <div class="card p-8">
 
-        <div class="flex justify-between mb-4">
-            <h4 class="h4">Rekap Data Parikesit</h4>
-
-
-
-            <!-- Modal -->
-
-
-            <hr class="my-4 border-t-2 border-gray-300">
-
-
-
-
+        <div class="space-y-2">
+            <p class="text-lg text-gray-900 font-semibold">Selamat Datang, <span
+                    class="font-bold">{{ auth()->user()->name }}</span></p>
+            <p class="text-sm text-black">Email : {{ auth()->user()->email }}</p>
         </div>
+
+        <div class="space-y-2 w-1/2 mt-10">
+            <p class="text-lg text-black font-semibold">Pintasan</p>
+            <div class="grid grid-cols-2 gap-4">
+                @if (auth()->user()->role == 'opd')
+                    <a href="{{ route('penilaian.index') }}"
+                        class="p-4 bg-blue-600 border border-blue-700 rounded-lg hover:bg-blue-700 transition flex items-center gap-2 shadow-md">
+                        <i class="fad fa-tasks text-white"></i>
+                        <p class="font-semibold text-white">Penilaian Mandiri</p>
+                    </a>
+                    <a href="{{ route('pembinaan.index') }}"
+                        class="p-4 bg-green-600 border border-green-700 rounded-lg hover:bg-green-700 transition flex items-center gap-2 shadow-md">
+                        <i class="fad fa-whistle text-white"></i>
+                        <p class="font-semibold text-white">Pembinaan</p>
+                    </a>
+                @elseif (auth()->user()->role == 'walidata')
+                    <a href="{{ route('disposisi.penilaian.tersedia') }}"
+                        class="p-4 bg-yellow-600 border border-yellow-700 rounded-lg hover:bg-yellow-700 transition flex items-center gap-2 shadow-md">
+                        <i class="fad fa-check-circle text-white"></i>
+                        <p class="font-semibold text-white">Penilaian Selesai</p>
+                    </a>
+                    <a href="{{ route('pembinaan.index') }}"
+                        class="p-4 bg-green-600 border border-green-700 rounded-lg hover:bg-green-700 transition flex items-center gap-2 shadow-md">
+                        <i class="fad fa-whistle text-white"></i>
+                        <p class="font-semibold text-white">Pembinaan</p>
+                    </a>
+                @elseif (auth()->user()->role == 'admin')
+                    <a href="{{ route('disposisi.penilaian.tersedia') }}"
+                        class="p-4 bg-yellow-600 border border-yellow-700 rounded-lg hover:bg-yellow-700 transition flex items-center gap-2 shadow-md">
+                        <i class="fad fa-check-circle text-white"></i>
+                        <p class="font-semibold text-white">Penilaian Selesai</p>
+                    </a>
+                    <a href="{{ route('dokumentasi.index') }}"
+                        class="p-4 bg-purple-600 border border-purple-700 rounded-lg hover:bg-purple-700 transition flex items-center gap-2 shadow-md">
+                        <i class="fad fa-camera text-white"></i>
+                        <p class="font-semibold text-white">Dokumentasi</p>
+                    </a>
+                @endif
+            </div>
+        </div>
+
+
     </div>
 
 
@@ -37,7 +70,8 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="user_id" class="block text-sm font-medium text-gray-700 mb-1">Pilih Kegiatan Kegiatan</label>
+                    <label for="user_id" class="block text-sm font-medium text-gray-700 mb-1">Pilih Kegiatan
+                        Kegiatan</label>
                     <select name="formulir_id" id="formulir_id" required
                         class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="" selected>-- Pilih Kegiatan Penilaian --</option>
