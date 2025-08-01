@@ -51,9 +51,15 @@
 
 
 
-            <div class="flex justify-end">
+            <div class="flex justify-end space-x-4">
+                <a href="{{ route('dokumentasi.show', $dokumentasiKegiatan->id) }}"
+                    class="mt-5 p-2 px-8 bg-gray-300 text-gray-800 hover:bg-gray-400 ease-in-out transition duration-100 border rounded-md">
+                    Batal
+                </a>
                 <button type="submit"
-                    class="mt-5 p-2 px-8 bg-blue-500 text-white hover:bg-blue-900 hover:text-white ease-in-out transition duration-100 border rounded-md">Simpan</button>
+                    class="mt-5 p-2 px-8 bg-blue-500 text-white hover:bg-blue-900 hover:text-white ease-in-out transition duration-100 border rounded-md">
+                    Simpan
+                </button>
             </div>
 
         </form>

@@ -42,7 +42,7 @@
                             </div>
                             <div class="text-sm text-blue-600  mt-2">
                                 {{ $dokumentasiKegiatan->created_at->format('d F Y') }} |
-                                {{ $dokumentasiKegiatan->instansi ?? 'Dinas Lorem Ipsum' }}</div>
+                                {{ auth()->user()->name }}</div>
 
                         </div>
 
